@@ -33,15 +33,17 @@ print('4의 예측값 :', result)
 '''
 epochs=30으로 고정해서 하이퍼 파라미터 튜닝 : 히든 레이어를 수정(숫자변경, 레이어 추가/삭제 등)하여, 4가 도출할 수 있도록
 '''
+
 '''
 model = Sequential()
 model.add(Dense(300, input_dim=1)) 
 model.add(Dense(150))
 model.add(Dense(160))
 model.add(Dense(105))
+
+
 model.add(Dense(75))
 model.add(Dense(1))
-
-설정 시 
+ 
 노드 값을 커졌다 작아졌다 2번 반복 했을 시 예측값 3.99까지 도출했음
 '''
