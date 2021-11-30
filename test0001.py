@@ -1,31 +1,19 @@
-import random
+import pandas as pd
+import numpy as np
 
-a, b = input().split()
-c, d = input().split()
-e, f = input().split()
-g, h = input().split()
-i, j = input().split()
+path = './_data/titanic/'
+train = pd.read_csv(path + 'train.csv')
+test = pd.read_csv(path + 'test.csv')
+train.head()
 
-at = random.randint(1, 2)
-bt = 3 - at
-ct = random.randint(1, 2)
-dt = 3 - ct
-et = random.randint(1, 2)
-ft = 3 - et
-gt = random.randint(1, 2)
-ht = 3 - gt
-it = random.randint(1, 2)
-jt = 3 - it
+print('train data shape: ', train.shape)
+print('test data shape: ', test.shape)
+print('----------[train infomation]----------')
+print(train.info())
+print('----------[test infomation]----------')
+print(test.info())
 
-player_names = [a, b, c, d, e, f, g, h, i, j]
-team_indexs = [at, bt, ct, dt, et, ft, gt, ht, it, jt]
-
-print("1팀")
-for i in range(0,10):
-    if team_indexs[i] % 2 == 1:
-        print(player_names[i])
-
-print("2팀")
-for i in range(0,10):
-    if team_indexs[i]% 2 == 0:
-        print(player_names[i])
+import matplotlib.pyplot as plt
+%matplotlib inline
+import seaborn as sns
+sns.set() # setting seaborn default for plots

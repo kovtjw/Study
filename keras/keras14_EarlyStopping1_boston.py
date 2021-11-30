@@ -44,9 +44,9 @@ y_predict = model.predict(x_test)
 # r2 = r2_score(y_test, y_predict)
 # print('r2 스코어:', r2)
  
- 
-print(hist.history['val_loss'])
 
+print(hist.history['val_loss'])
+'''
 import matplotlib.pyplot as plt 
 plt.figure(figsize=(9,5)) # 판을 깔다.
 plt.plot(hist.history['loss'], marker= '.', c='red', label='loss') # 선, 점을 그리다.
@@ -57,7 +57,7 @@ plt.ylabel('loss')
 plt.xlabel('epoch')
 plt.legend(loc='upper right')
 plt.show()
-
+'''
 
 
 '''

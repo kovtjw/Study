@@ -36,8 +36,7 @@ hist = model.fit(x_train, y_train, epochs = epoch, batch_size =1,validation_spli
 loss = model.evaluate(x_test,y_test)
 print("loss : ",loss)
 
-y_predict = model.predict(x_test)
-r2 = r2_score(y_test,y_predict)
+ 
 print("r2 : ",r2)
 
 print("epochs :",epoch)
