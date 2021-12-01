@@ -22,7 +22,7 @@ print(submit_file.columns)    # ['datetime', 'count']
 
 
 # print(train.info())
-# print(test.describe())   
+print(test_file.describe())   
 # 'object': 모든 자료형의 최상위형, string형으로 생각하면 된다.   
 # 0   datetime    10886 non-null  object는 수치화 할 수 없다. >> 수치화 작업을 해주어야 한다. 
 # print(type(train)) # <class 'pandas.core.frame.DataFrame'>
