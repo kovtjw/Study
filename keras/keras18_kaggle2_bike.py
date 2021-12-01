@@ -63,7 +63,6 @@ y = np.log1p(y)
 x_train, x_test, y_train, y_test = train_test_split(x,y,
         train_size =0.9, shuffle=True, random_state = 666)
 
-#2. 모델구성
 
 #2. 모델구성
 model = Sequential()
