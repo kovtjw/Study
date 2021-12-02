@@ -46,3 +46,6 @@ model.add(Dense(1))
 # batch_size도 성능에 영향을 미친다. 
 '''
  
+'''
+dfsdfsa
+'''
