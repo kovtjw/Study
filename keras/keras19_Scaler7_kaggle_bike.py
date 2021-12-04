@@ -11,7 +11,7 @@ def RMSE(y_test, y_pred):
     return np.sqrt(mean_squared_error(y_test, y_pred))
 
 #1. 데이터 
-path = './_data/bike/'   # '..'의 뜻은 이전 단계이다. / '.'은 현재 단계 >> 여기선 STUDY 폴더
+path = '../_data/kaggle/bike/'   # '..'의 뜻은 이전 단계이다. / '.'은 현재 단계 >> 여기선 STUDY 폴더
 train = pd.read_csv(path+'train.csv')  
 # print(train)      # (10886, 12)
 test_file = pd.read_csv(path+'test.csv')
@@ -29,7 +29,7 @@ y = np.log1p(y)
 # y = np.log(y)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-        train_size =0.9, shuffle=True, random_state = 26)
+        train_size =0.9, shuffle=True, random_state = 42)
 
 
 scaler = MinMaxScaler()         
@@ -61,8 +61,10 @@ from tensorflow.keras.callbacks import EarlyStopping
 es = EarlyStopping(monitor='val_loss', patience=100, mode='auto',
                    verbose=1, restore_best_weights=False)
 
-model.fit(x_train, y_train, epochs=1000, batch_size=0,
+model.fit(x_train, y_train, epochs=1000, batch_size=32,
           validation_split=0.3, callbacks=[es])
+
+model.save('./_save/keras19_7_save_model.h5')
 
 #4. 평가, 예측
 loss = model.evaluate(x_test,y_test)

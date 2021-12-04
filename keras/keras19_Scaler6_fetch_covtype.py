@@ -15,7 +15,7 @@ y = pd.get_dummies(y)
 print(x.shape,y.shape)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-        train_size =0.8, shuffle=True, random_state = 36)
+        train_size =0.8, shuffle=True, random_state = 42)
 
 
 scaler = MaxAbsScaler()         
@@ -37,11 +37,13 @@ model.add(Dense(7, activation= 'softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 from tensorflow.keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor = 'val_loss', patience=10, mode='auto',
+es = EarlyStopping(monitor = 'val_loss', patience=30, mode='auto',
                    verbose =1, restore_best_weights=False)
 
-model.fit(x_train, y_train, epochs =100, batch_size=1000,
+model.fit(x_train, y_train, epochs =1000, batch_size=1000,
           validation_split=0.3, callbacks=[es])
+
+model.save('./_save/keras19_6_save_model.h5')
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)

@@ -20,7 +20,7 @@ y = datasets.target
 # x = x/np.max(x)
 
 x_train, x_test, y_train, y_test = train_test_split(
-    x, y, train_size=0.7, random_state=46
+    x, y, train_size=0.7, random_state=42
 )
 
 
@@ -33,26 +33,23 @@ x_test = scaler.transform(x_test)
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(233, input_dim=13)) 
-model.add(Dense(144,activation='relu'))
-model.add(Dense(89,activation='relu'))
-model.add(Dense(55))
-model.add(Dense(34))
-model.add(Dense(21))
-model.add(Dense(13))
-model.add(Dense(8))
+model.add(Dense(100, input_dim=13)) 
+model.add(Dense(80, activation='relu'))
+model.add(Dense(130, activation='sigmoid'))
+model.add(Dense(80, activation='relu'))
 model.add(Dense(5))
-model.add(Dense(3))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련
 model.compile(loss='mse', optimizer='adam')
 
 from tensorflow.keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor='val_loss', patience=30, mode='min', verbose=1) 
+es = EarlyStopping(monitor='val_loss', patience=100, mode='min', verbose=1) 
 
-model.fit(x_train, y_train, epochs=10000, batch_size=1,
+model.fit(x_train, y_train, epochs=10000, batch_size=32,
           validation_split=0.3, callbacks=[es])
+
+model.save('./_save/keras19_1_save_model.h5') 
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)

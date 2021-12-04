@@ -12,7 +12,7 @@ y = datasets.target
 # print(np.min(x), np.max(x))
 
 x_train, x_test, y_train, y_test = train_test_split(
-    x, y, train_size=0.8, random_state=66
+    x, y, train_size=0.8, random_state=42
 )
 
 
@@ -36,9 +36,10 @@ model.add(Dense(1))
 model.compile(loss='mse', optimizer='adam')
 
 from tensorflow.keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor='val_loss', patience=30, mode='min', verbose=1) 
-model.fit(x_train, y_train, epochs=200, batch_size=1,
+es = EarlyStopping(monitor='val_loss', patience=50, mode='min', verbose=1) 
+model.fit(x_train, y_train, epochs=200, batch_size=32,
           validation_split=0.3, callbacks=[es])
+model.save('./_save/keras25_3_save_model.h5') 
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)

@@ -29,7 +29,7 @@ y = to_categorical(y)  # 0부터 순차적으로 채워준다. > 99와 100밖에
 # print(y.shape)      # (3231, 9)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-         train_size =0.8, shuffle=True, random_state = 97)  
+         train_size =0.9, shuffle=True, random_state = 42)  
 print(x.type.value_counts())  # 1    2453  / 0     778 >> .pandas에서만 가능함, 수치 데이터들은 numpy이다. 
 # x['type'] = x.type 표현 방식이 같다.
 
@@ -52,10 +52,10 @@ model.add(Dense(9,activation='softmax'))   # 9개의 컬럼으로 출력이 되�
 model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics=['accuracy'])
  
 from tensorflow.keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor='val_loss', patience=20, mode='auto',
+es = EarlyStopping(monitor='val_loss', patience=100, mode='auto',
                    verbose=1, restore_best_weights=True) # restore_best_weights=True : 최종값 이전에 가장 좋았던 값 도출함
 
-model.fit(x_train, y_train, epochs=1000, batch_size=2,
+model.fit(x_train, y_train, epochs=1000, batch_size=32,
           validation_split=0.3, callbacks=[es])
 
 #4. 평가, 예측
@@ -67,7 +67,7 @@ le.fit(test_file.type)
 test_file_type = le.transform(test_file['type'])
 test_file['type'] = test_file_type
 
-print(test_file)
+# print(test_file)
 
 scaler.transform(test_file)
 
@@ -77,10 +77,13 @@ result_recover = np.argmax(results, axis =1).reshape(-1,1)
 # print(results[:5])
 submit_file['quality'] = result_recover
 # print(np.unique(result_recover[:5]))
-submit_file.to_csv(path+"wineq.csv", index = False)
+# submit_file.to_csv(path+"wineryy.csv", index = False)
 # submit_file ['quality'] = results
 
 # print(submit_file[:10])
 
 # # submit_file.to_csv(path + 'Suu.csv', index=False) # to_csv하면 자동으로 인덱스가 생기게 된다. > 없어져야 함
-
+submit_file.to_csv(path+"winerryy.csv", index = False)
+# print(result_recover)
+acc= str(round(loss[1]*100,4))
+model.save(f"./_save/keras24_dacon_save_model_{acc}.h5")
