@@ -1,4 +1,4 @@
-from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.models import Sequential, Model, load_model
 from tensorflow.keras.layers import Dense, Input
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score, mean_squared_error 
@@ -29,7 +29,7 @@ y = to_categorical(y)  # 0부터 순차적으로 채워준다. > 99와 100밖에
 # print(y.shape)      # (3231, 9)
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-         train_size =0.9, shuffle=True, random_state = 42)  
+         train_size =0.9, shuffle=True, random_state = 1)  
 print(x.type.value_counts())  # 1    2453  / 0     778 >> .pandas에서만 가능함, 수치 데이터들은 numpy이다. 
 # x['type'] = x.type 표현 방식이 같다.
 
@@ -41,22 +41,29 @@ x_test = scaler.transform(x_test)
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(100, input_dim=13)) 
-model.add(Dense(80, activation='relu'))
-model.add(Dense(130, activation='sigmoid'))
-model.add(Dense(80, activation='relu'))
+model.add(Dense(233, input_dim=13)) 
+model.add(Dense(144,activation='relu'))
+model.add(Dense(89))
+model.add(Dense(55))
+model.add(Dense(34))
+model.add(Dense(144))
+model.add(Dense(89))
+model.add(Dense(8))
 model.add(Dense(5))
-model.add(Dense(9,activation='softmax'))   # 9개의 컬럼으로 출력이 되는 형태 
+model.add(Dense(3))
+model.add(Dense(9))  # 9개의 컬럼으로 출력이 되는 형태 
+
+model = load_model ('./_save/keras24_dacon_save_model_56.1728.h5')
 
 #3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics=['accuracy'])
  
 from tensorflow.keras.callbacks import EarlyStopping
-es = EarlyStopping(monitor='val_loss', patience=100, mode='auto',
+es = EarlyStopping(monitor='val_loss', patience=50, mode='auto',
                    verbose=1, restore_best_weights=True) # restore_best_weights=True : 최종값 이전에 가장 좋았던 값 도출함
 
 model.fit(x_train, y_train, epochs=1000, batch_size=32,
-          validation_split=0.3, callbacks=[es])
+          validation_split=0.3) # callbacks=[es]
 
 #4. 평가, 예측
 loss = model.evaluate(x_test, y_test)
@@ -83,7 +90,8 @@ submit_file['quality'] = result_recover
 # print(submit_file[:10])
 
 # # submit_file.to_csv(path + 'Suu.csv', index=False) # to_csv하면 자동으로 인덱스가 생기게 된다. > 없어져야 함
-submit_file.to_csv(path+"winerryy.csv", index = False)
+submit_file.to_csv(path+"huue.csv", index = False)
 # print(result_recover)
 acc= str(round(loss[1]*100,4))
 model.save(f"./_save/keras24_dacon_save_model_{acc}.h5")
+ 
