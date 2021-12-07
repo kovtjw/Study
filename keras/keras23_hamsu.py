@@ -10,12 +10,13 @@ y = np.transpose(y)
 
 #2. 모델구성
 from tensorflow.keras.models import Sequential, Model # 함수형 모델
-from tensorflow.keras.layers import Dense, Input
+from tensorflow.keras.layers import Dense, Input, Dropout
 
 
 input1 = Input(shape=(3,))
 dense1 = Dense(10)(input1)
-dense2 = Dense(9,activation='relu')(dense1)
+drop1 = Dropout(0.2)(dense1)
+dense2 = Dense(9,activation='relu')(drop1)
 dense3 = Dense(8)(dense2)
 output1 = Dense(1)(dense3)
 model = Model(inputs=input1, outputs=output1)

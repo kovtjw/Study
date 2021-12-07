@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.metrics import r2_score, mean_squared_error #mse
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
@@ -44,7 +44,9 @@ test_file = scaler.transform(test_file)
 model = Sequential()
 model.add(Dense(100, input_dim=8)) 
 model.add(Dense(80, activation='relu'))
+model.add(Dropout(0.2)) 
 model.add(Dense(130, activation='sigmoid'))
+model.add(Dropout(0.3)) 
 model.add(Dense(80, activation='relu'))
 model.add(Dense(5))
 model.add(Dense(1))
@@ -114,28 +116,41 @@ print('r2 스코어:', r2)
 
 rmse = RMSE(y_test,y_pred)
 print('RMSE : ', rmse)
+
 '''
 ====================== 1. 기본출력 ========================
-35/35 [==============================] - 0s 469us/step - loss: 1.4179
-loss: 1.4178920984268188
-r2 스코어: 0.325472912632533
-RMSE :  1.190752760091876
+35/35 [==============================] - 0s 440us/step - loss: 1.4469
+loss: 1.4469174146652222
+r2 스코어: 0.3116648345351233
+RMSE :  1.2028788205085081
 ====================== 2. load_model 출력 ========================
-35/35 [==============================] - 0s 440us/step - loss: 1.4179
-loss: 1.4178920984268188
-r2 스코어: 0.325472912632533
-RMSE :  1.190752760091876
+35/35 [==============================] - 0s 498us/step - loss: 1.4469
+loss: 1.4469174146652222
+r2 스코어: 0.3116648345351233
+RMSE :  1.2028788205085081
 ====================== 3. ModelCheckPoint 출력 ========================
-35/35 [==============================] - 0s 499us/step - loss: 1.4375
-loss: 1.4375331401824951
-r2 스코어: 0.325472912632533
-RMSE :  1.190752760091876
-'''
-
-'''
-데이터가 작고, 교육용으로 잘 만들어져 있기 때문에 
-비슷하다고 느낄 수 있지만, 이후에는 체크포인트를 사용하는 것이 더 낫다.
-
+35/35 [==============================] - 0s 469us/step - loss: 1.4177
+loss: 1.4177314043045044
+r2 스코어: 0.3116648345351233
+RMSE :  1.2028788205085081
 
 '''
 
+###########################드랍아웃 적용 시#############################
+'''
+====================== 1. 기본출력 ========================
+35/35 [==============================] - 0s 440us/step - loss: 1.4254
+loss: 1.425412654876709
+r2 스코어: 0.32189516197739976
+RMSE :  1.1939065120607113
+====================== 2. load_model 출력 ========================
+35/35 [==============================] - 0s 469us/step - loss: 1.4254
+loss: 1.425412654876709
+r2 스코어: 0.32189516197739976
+RMSE :  1.1939065120607113
+====================== 3. ModelCheckPoint 출력 ========================
+35/35 [==============================] - 0s 499us/step - loss: 1.4298
+loss: 1.4298330545425415
+r2 스코어: 0.32189516197739976
+RMSE :  1.1939065120607113
+'''

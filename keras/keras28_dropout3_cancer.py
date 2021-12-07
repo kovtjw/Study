@@ -1,5 +1,5 @@
 from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dense, Dropout
 from sklearn.datasets import load_breast_cancer
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
@@ -24,7 +24,9 @@ x_test = scaler.transform(x_test)
 #2. 모델구성
 model = Sequential()
 model.add(Dense(100, input_dim=30)) 
+model.add(Dropout(0.2)) 
 model.add(Dense(80, activation='relu'))
+model.add(Dropout(0.3)) 
 model.add(Dense(130, activation='sigmoid'))
 model.add(Dense(80, activation='relu'))
 model.add(Dense(5))
@@ -78,16 +80,30 @@ r2 = r2_score(y_test, y_predict)
 print('r2 스코어:', r2)
 '''
 ====================== 1. 기본출력 ========================
-4/4 [==============================] - 0s 665us/step - loss: 0.0292
-loss: 0.02924714982509613
-r2 스코어: 0.8755008196727804
+4/4 [==============================] - 0s 665us/step - loss: 0.0271
+loss: 0.027050666511058807
+r2 스코어: 0.8848508223840043
 ====================== 2. load_model 출력 ========================
-4/4 [==============================] - 0s 665us/step - loss: 0.0292
-loss: 0.02924714982509613
-r2 스코어: 0.8755008196727804
+4/4 [==============================] - 0s 670us/step - loss: 0.0271
+loss: 0.027050666511058807
+r2 스코어: 0.8848508223840043
 ====================== 3. ModelCheckPoint 출력 ========================
-4/4 [==============================] - 0s 665us/step - loss: 0.0230
-loss: 0.023004252463579178
-r2 스코어: 0.8755008196727804
+4/4 [==============================] - 0s 665us/step - loss: 0.0297
+loss: 0.02965453453361988
+r2 스코어: 0.8848508223840043
 '''
-
+###########################드랍아웃 적용 시#############################
+'''
+====================== 1. 기본출력 ========================
+4/4 [==============================] - 0s 664us/step - loss: 0.0325
+loss: 0.03250560536980629
+r2 스코어: 0.8616302408971421
+====================== 2. load_model 출력 ========================
+4/4 [==============================] - 0s 332us/step - loss: 0.0325
+loss: 0.03250560536980629
+r2 스코어: 0.8616302408971421
+====================== 3. ModelCheckPoint 출력 ========================
+4/4 [==============================] - 0s 665us/step - loss: 0.0242
+loss: 0.02424214966595173
+r2 스코어: 0.8616302408971421
+'''
