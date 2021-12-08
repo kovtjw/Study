@@ -9,8 +9,9 @@ from tensorflow.keras.utils import to_categorical
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 # print(x_train.shape, y_train.shape)   # (60000, 28, 28) (60000,)  >> 흑백
 # print(x_test.shape, y_test.shape)  # (10000, 28, 28) (10000,)
-x_train = x_train.reshape(60000,28,28,1) # reshape는 전체를 다 곱해서 일정하면 상관 없다. (60000,28,14,2)도 가능
+x_train = x_train.reshape(60000,28,28,1) 
 x_test = x_test.reshape(10000, 28,28,1)
+# reshape는 전체를 다 곱해서 일정하면 상관 없다. (60000,28,14,2)도 가능
 # print(x_train.shape)
 # print(np.unique(y_train, return_counts=True))  # (60000, 28, 28, 1)(array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8), array([5923, 6742, 5958, 6131, 5842, 5421, 5918, 6265, 5851, 5949],dtype=int64))
 
@@ -77,15 +78,18 @@ loss: [0.06917189061641693, 0.9818999767303467]
 ################### CNN 주요 내용 정리 #########################
 '''
 model.add(Conv2D(a, kernel_size = (b,c), input_shape = (q,w,e))) 
-1) a = 출력 채널 
+1) a = 출력 채널  >>> 필터
 
 2) b,c = 필터, 커넬 사이즈와 같은 말이며, 이미지의 특징을 찾아내기 위한
 공용 파라미터이다. 
 
-3) e : 입력 채널, RGB 
+3) q,w = low, coloum
+
+4) e : 입력 채널, RGB 
 - 이미지 픽셀 하나하나는 실수이며, 컬러사진을 표현하기 위해서는 RGB 3개의
 실수로 표현해야 한다. 
 
-추가 
+
+
 
 '''
