@@ -1,82 +1,116 @@
-from tensorflow.keras.datasets import cifar100
-import numpy as np
+from sklearn.datasets import load_boston
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Conv2D, Flatten, MaxPool2D
-from tensorflow.python.keras.layers.core import Dropout
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
-import time
+from tensorflow.keras.layers import Dense, Conv2D, Flatten, Dropout
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
 
-(x_train, y_train),(x_test,y_test) = cifar100.load_data()
+#1. 데이터
+datasets = load_boston()
+x = datasets.data
+y = datasets.target
 
-print(x_train.shape)
-print(y_train.shape)
-print(np.unique(y_train,return_counts=True))
-'''
-(50000, 32, 32, 3)
-(50000, 1)
-(array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], dtype=uint8), array([5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000, 5000],
-      dtype=int64))
-'''
-from tensorflow.keras.utils import to_categorical
-y_train = to_categorical(y_train)
-y_test = to_categorical(y_test)
+print(x)
+print(y) 
+print(x.shape)      # (506, 13) -> (506, 13, 1, 1)
+print(y.shape)      # (506, )
 
-#1 데이터
-#x_train = x_train.reshape(x_train.shape[0],x_train.shape[1],x_train.shape[2],x_train.shape[3])
-#x_test = x_test.reshape(x_test.shape[0],x_test.shape[1],x_test.shape[2],x_test.shape[3])
+print(datasets.feature_names)
+# print(datasets.DESCR)
 
-scaler = StandardScaler()
+# data_x = pd.DataFrame(x)
+# print(type(data_x))
+# x = data_x.drop(['CHAS'], axis =1)
+# print(type(x))
 
-n = x_train.shape[0]# 이미지갯수 50000
-x_train_reshape = x_train.reshape(n,-1) #----> (50000,32,32,3) --> (50000, 32*32*3 ) 0~255
-x_train_transe = scaler.fit_transform(x_train_reshape) #0~255 -> 0~1
-x_train = x_train_transe.reshape(x_train.shape) #--->(50000,32,32,3) 0~1
+# x_train =  x_train.drop('CHAS', axis =1)
+# print(x_train)
 
-m = x_test.shape[0]
-x_test = scaler.transform(x_test.reshape(m,-1)).reshape(x_test.shape)
+# 완료하시오!!
+# train 0.7
+# R2 0.8 이상
+
+# cnn 맹그러
+
+import pandas as pd
+xx = pd.DataFrame(x, columns=datasets.feature_names)
+print(type(xx))
+print(xx)
+# print(datasets.corr())
+
+print(xx.corr())                    # 양의 상관관계 'weight' 가 양수, 음의 상관관계 'weight' 가 음수
+
+# xx['price'] = y
+
+print(xx)
+
+x = xx.drop(['CHAS'], axis =1)
+print(x.columns)
+print(x.shape)
+
+x = x.to_numpy()
+
+# import matplotlib.pyplot as plt
+# import seaborn as sns
+# plt.figure(figsize=(10,10))
+# sns.heatmap(data=xx.corr(), square=True, annot=True, cbar=True)
+# plt.show()
+
+x_train, x_test, y_train, y_test = train_test_split(x, y, train_size=0.7, shuffle=True, random_state=66)
+
+scaler = MinMaxScaler()
+# scaler = StandardScaler()
+# scaler = RobustScaler()
+# scaler = MaxAbsScaler()
+
+scaler.fit(x_train)
+x_train = scaler.transform(x_train)
+x_test = scaler.transform(x_test)
+
+# print(x_train.shape)
+x_train = x_train.reshape(354, 3, 2, 2)
+x_test = x_test.reshape(152, 3, 2, 2)
+
+#2. 모델 구성
 
 model = Sequential()
-model.add(Conv2D(32, kernel_size=(3,3),padding ='same',strides=1, input_shape = (x_train.shape[1],x_train.shape[2],x_train.shape[3])))
-model.add(MaxPool2D(2))
-model.add(Conv2D(32,(3,3), activation='relu'))
-model.add(MaxPool2D(2))
+model.add(Conv2D(10, kernel_size=(2,2), input_shape=(3, 2, 2)))
+model.summary()
 model.add(Dropout(0.2))
-model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(Conv2D(64,(3,3), activation='relu'))
-model.add(MaxPool2D(2))
-model.add(Flatten())
-model.add(Dense(512))
-model.add(Dropout(0.5))
-model.add(Dense(10))
-model.add(Dense(100))
-model.add(Dropout(0.5))
-model.add(Dense(100, activation='softmax'))
+model.add(Flatten())                                         
+model.add(Dense(64, activation='relu'))
+model.add(Dropout(0.2))
+model.add(Dense(32, activation='relu'))
+model.add(Dense(16, activation='relu'))
+model.add(Dense(1))
 
-#model.summary()#3,153
 #3. 컴파일, 훈련
 
-opt="adam"
-model.compile(loss = 'categorical_crossentropy', optimizer = opt, metrics=['accuracy']) # metrics=['accuracy'] 영향을 미치지 않는다
-########################################################################
-# model.compile(loss = 'mse', optimizer = 'adam')
-start = time.time()
+model.compile(loss="mse", optimizer="adam")
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 import datetime
-epoch = 10000
-patience_num = 50
 date = datetime.datetime.now()
-datetime = date.strftime("%m%d_%H%M")
-filepath = "./_ModelCheckPoint/"
-filename = '{epoch:04d}-{val_loss:4f}.hdf5' #filepath + datetime
-model_path = "".join([filepath,'k32_cifar10_',datetime,"_",filename])
-es = EarlyStopping(monitor='val_loss', patience=patience_num, mode = 'auto', restore_best_weights=True)
-mcp = ModelCheckpoint(monitor='val_loss', mode = 'auto', verbose=1, save_best_only= True, filepath = model_path)
-hist = model.fit(x_train, y_train, epochs = epoch, validation_split=0.2, callbacks=[es], batch_size = 50)
-end = time.time() - start
-print('시간 : ', round(end,2) ,'초')
-########################################################################
-#4 평가예측
-loss = model.evaluate(x_test,y_test)
+datetime = date.strftime("%m%d_%H%M")   # 월일_시분
+# print(datetime)
+
+filepath = './_ModelCheckPoint/'
+filename = '{epoch:04d}-{val_loss:.4f}.hdf5'       # 100(에포수)-0.3724(val_loss).hdf5
+model_path = "".join([filepath, 'k35_1_', datetime, '_', filename])
+es = EarlyStopping(monitor='val_loss', patience=10, mode='auto', verbose=1, restore_best_weights=True)
+mcp = ModelCheckpoint(monitor="val_loss", mode="auto", verbose=1, save_best_only=True, filepath=model_path)
+hist = model.fit(x_train, y_train, epochs=20, batch_size=8, validation_split=0.3, callbacks=[es, mcp])
+
+# model = load_model("")
+
+#4. 평가, 예측
+# x_test = x_test.reshape(152, 12)
+loss = model.evaluate(x_test, y_test)
+print('loss : ', loss)
 y_predict = model.predict(x_test)
-print("loss : ",loss[0])
-print("accuracy : ",loss[1])
+
+from sklearn.metrics import r2_score
+print(y_test.shape, y_predict.shape)
+r2 = r2_score(y_test, y_predict)
+print('r2 스코어 : ', r2)
