@@ -9,7 +9,6 @@ from tensorflow.python.keras.saving.save import load_model
 
 #1. 데이터
 datasets = load_boston()
-
 x = datasets.data
 y = datasets.target
 

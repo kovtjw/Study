@@ -7,13 +7,20 @@ from sklearn.model_selection import train_test_split
 import numpy as np
 
 (x_train, y_train), (x_test, y_test) = cifar100.load_data()
-x_train = x_train.reshape(-1,32*32*3)/255
-x_test = x_test.reshape(-1,32*32*3)/255
 print(x_train.shape) #(50000, 3072)
 print(x_test.shape) # (10000, 3072)
 
 y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
+scaler = StandardScaler()
+
+n = x_train.shape[0]# 이미지갯수 50000
+x_train_reshape = x_train.reshape(n,-1) #----> (50000,32,32,3) --> (50000, 32*32*3 ) 0~255
+x_train_transe = scaler.fit_transform(x_train_reshape) #0~255 -> 0~1
+x_train = x_train_transe.reshape(x_train.shape) #--->(50000,32,32,3) 0~1
+
+m = x_test.shape[0]
+x_test = scaler.transform(x_test.reshape(m,-1)).reshape(x_test.shape)
 # print(x_train.shape,x_test.shape)  # (50000, 32, 32, 3) (10000, 32, 32, 3)
 
 # scaler =  MaxAbsScaler()         
@@ -63,3 +70,7 @@ from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('r2 스코어:', r2)
 
+'''
+스케일러는 전부다 2차원으로 받아들인다. >> 4차원은 불가함 >>> 2차원으로 변경해야 함 >>>> 2차원 변경 시 순서와 값은 바뀌지 않는다.
+
+'''
