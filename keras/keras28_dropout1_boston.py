@@ -18,14 +18,16 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 #2. 모델구성
 model = Sequential()
 model.add(Dense(100, input_dim=13))
-model.add(Dropout(0.2)) 
+model.add(Dropout(0.5)) 
 model.add(Dense(150, activation='relu'))
-model.add(Dropout(0.3)) 
+model.add(Dropout(0.5)) 
 model.add(Dense(100, activation='sigmoid'))
-model.add(Dropout(0.1)) 
+model.add(Dropout(0.5)) 
 model.add(Dense(80, activation='relu'))
 model.add(Dense(50))
 model.add(Dense(1))
+model.summary()
+
 
 
 # 3. 컴파일, 훈련
@@ -96,7 +98,6 @@ y_predict3 = model3.predict(x_test)
 from sklearn.metrics import r2_score
 r2 = r2_score(y_test, y_predict)
 print('r2 스코어:', r2)
-
 
 
 '''
