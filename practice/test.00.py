@@ -32,8 +32,6 @@ print(datasets.feature_names)
 # train 0.7
 # R2 0.8 이상
 
-# cnn 맹그러
-
 import pandas as pd
 xx = pd.DataFrame(x, columns=datasets.feature_names)
 print(type(xx))
