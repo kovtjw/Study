@@ -28,8 +28,8 @@ model.add(Dense(16))
 model.add(Dense(8))
 model.add(Dense(1))
 
-
-
+model.summary()
+'''
 #3. 컴파일, 훈련 
 model.compile(loss = 'mse', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
 model.fit(x, y, epochs = 200)
@@ -38,3 +38,4 @@ model.fit(x, y, epochs = 200)
 model.evaluate(x, y)
 result = model.predict([[[5],[6],[7]]])
 print(result)
+'''

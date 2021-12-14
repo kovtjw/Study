@@ -39,6 +39,3 @@ model.summary()
 # result = model.predict([[[5],[6],[7]]])
 # print(result)
 
-'''
-
-'''
