@@ -1,14 +1,16 @@
-from tensorflow.keras.datasets import cifar100
+from tensorflow.keras.datasets import cifar10
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, LSTM
 from tensorflow.keras.utils import to_categorical
 import numpy as np
-(x_train, y_train), (x_test, y_test) = cifar100.load_data()
+
+(x_train, y_train), (x_test, y_test) = cifar10.load_data()
 x_train = x_train.reshape(50000,32,96)
 x_test = x_test.reshape(10000,32,96)
+y_train = to_categorical(y_train) # (50000, 32, 32, 3)
+y_test = to_categorical(y_test) # (10000, 32, 32, 3)
 
-y_train = to_categorical(y_train)
-y_test = to_categorical(y_test)
+# print(x_train.shape, x_test.shape)
 
 #2. 모델구성
 model = Sequential()
@@ -17,7 +19,7 @@ model.add(Dense(128, activation='relu'))
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32))
 model.add(Dense(16))
-model.add(Dense(100, activation = 'softmax'))
+model.add(Dense(10, activation = 'softmax'))
 
 #3. 컴파일, 훈련
 model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics=['accuracy'])
