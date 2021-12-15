@@ -38,6 +38,7 @@ print(result)
 
 
 # return_sequences=True 
+
 ''''
 return_sequences=True 
 otimizer = 'rmsprop'
