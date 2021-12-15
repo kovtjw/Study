@@ -48,3 +48,8 @@ loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 y_predict = model.predict(x_test)
+
+'''
+LSTM 적용 보다, DNN이 더 좋은 효율을 냈다.
+
+'''

@@ -51,3 +51,16 @@ loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 y_predict = model.predict(x_test)
+
+
+'''
+def split_x(data, size):
+    aaa = []
+    for i in range(len(data) - size +1): 
+        subset = data[i : (i+size)]      
+        aaa.append(subset)              
+    return np.array(aaa)
+
+위 함수 적용하여, 훈련 및 평가 시 더 좋은 loss값을 도출 했다.
+
+'''
