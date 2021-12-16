@@ -4,7 +4,7 @@ from sklearn.datasets import load_boston
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
-
+import time
 a = load_boston()
 x = a.data
 y = a.target
@@ -20,7 +20,7 @@ x_test = x_test.reshape(x_test.shape[0],x_test.shape[1],1) #(152, 13)
 
 #2. 모델구성
 model = Sequential()
-model.add(LSTM(32,activation='relu',input_shape = (13,1)))  
+model.add(LSTM(10,activation='relu',input_shape = (13,1)))  
 model.add(Dense(128, activation='relu'))      
 model.add(Dense(64, activation='relu'))
 model.add(Dense(32))
@@ -30,11 +30,15 @@ model.add(Dense(1))
 model.summary()
 
 #3. 컴파일, 훈련 
+start = time.time()
+
 model.compile(loss = 'mae', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
 model.fit(x_train, y_train, epochs = 100)
+end = time.time()- start
 
 #4. 평가, 예측 
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 y_predict = model.predict(x_test)
+print("걸린시간 : ", round(end, 3), '초')

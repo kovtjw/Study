@@ -3,6 +3,7 @@ from sklearn.datasets import load_wine
 from tensorflow.keras.models import Sequential
 from sklearn.model_selection import train_test_split
 import numpy as np
+import time
 
 
 #1. 데이터
@@ -30,11 +31,19 @@ model.add(Dense(16))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련 
-model.compile(loss = 'mae', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
+start = time.time()
+model.compile(loss = 'mse', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
 model.fit(x_train, y_train, epochs = 100)
+end = time.time()- start
 
 #4. 평가, 예측 
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 y_predict = model.predict(x_test)
+print("걸린시간 : ", round(end, 3), '초')
+
+'''
+loss: 0.22223322093486786
+걸린시간 :  2.452 초
+'''

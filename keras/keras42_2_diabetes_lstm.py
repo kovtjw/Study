@@ -3,6 +3,7 @@ from tensorflow.keras.layers import Dense, LSTM
 from sklearn.datasets import load_diabetes
 import numpy as np
 from sklearn.model_selection import train_test_split
+import time
 
 a = load_diabetes()
 b = a.data
@@ -40,16 +41,18 @@ model.add(Dense(1))
 
 
 #3. 컴파일, 훈련 
+start = time.time()
 model.compile(loss = 'mae', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
 model.fit(x, y, epochs = 100)
-
+end = time.time()- start
 #4. 평가, 예측 
 loss = model.evaluate(x_test, y_test)
 print('loss:', loss)
 
 y_predict = model.predict(x_test)
-
+print("걸린시간 : ", round(end, 3), '초')
 '''
 LSTM 적용 보다, DNN이 더 좋은 효율을 냈다.
-
+loss: 60.75757598876953
+걸린시간 :  3.67 초
 '''
