@@ -30,7 +30,7 @@ model.add(Dense(5))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련
-model.compile(loss='mse', optimizer='adam')
+model.compile(loss='mse', optimizer='adam', metrics='mae')
 
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 

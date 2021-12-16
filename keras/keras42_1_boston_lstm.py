@@ -43,7 +43,7 @@ model.add(Dense(1))
 # y = split_x[:,-1]
 # print(x.shape,y.shape)  # (506, 13) (506,)
 #3. 컴파일, 훈련 
-model.compile(loss = 'mae', optimizer = 'adam')   # optimizer는 loss값을 최적화 한다.
+model.compile(loss = 'mae', optimizer = 'adam',metrics=['mse'])   # optimizer는 loss값을 최적화 한다.
 model.fit(x, y, epochs = 10)
 
 #4. 평가, 예측 
