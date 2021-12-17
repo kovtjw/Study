@@ -79,8 +79,13 @@ model.fit([x1_train,x2_train],[y1_train,y2_train],epochs = 20)
 end = time.time()- start
 
 #4. 평가, 예측 
-loss = model.evaluate([x1_test,x2_test],[y1_test,y2_test])
-print('loss:', loss)
+result = model.evaluate([x1_test,x2_test],[y1_test,y2_test])
+print('loss:', result[0]) 
+print('mse:',result[1])
+print('1:',result[2])
+print('2:',result[3])
+print('3:',result[4])
+
 
 # loss: [809.4212036132812, 793.8211059570312, 15.600076675415039, 630323.9375, 336.79296875]
 
@@ -88,5 +93,13 @@ print('loss:', loss)
 ensemble
 두 개의 x 데이터의 열의 갯수는 달라도 되지만, 행의 갯수는 동일하게 해야 한다. 
 레이어의 갯수는 달라도 상관 없다.
+
+'''
+'''
+loss: 935.4859619140625 : y1,y2의 loss의 총합
+mse: 906.9968872070312 : y1의 loss
+1: 28.489055633544922 : y2의 loss
+2: 822898.375  : y1의 mse
+3: 976.9550170898438 : y2의 mse
 
 '''
