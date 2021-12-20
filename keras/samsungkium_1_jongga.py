@@ -11,23 +11,19 @@ path = '../_data/juga predict/'
 SD = pd.read_csv(path + '삼성전자.csv',thousands=',')
 KD = pd.read_csv(path + '키움증권.csv',thousands=',')
 
-SD = SD.drop(range(30, 1120), axis=0)
-KD = KD.drop(range(30, 1060), axis=0)
+SD = SD.drop(range(7, 1120), axis=0)
+KD = KD.drop(range(7, 1060), axis=0)
 
-x1 = SD.drop(['일자','고가','저가',"Unnamed: 6",'전일비','등락률','시가','종가','신용비','개인','기관','외인(수량)','외국계','프로그램', '외인비'], axis=1) # axis=1 컬럼 삭제할 때 필요함
+x1 = SD.drop(['일자','고가','저가',"Unnamed: 6",'전일비','등락률','거래량','금액(백만)','신용비','개인','기관','외인(수량)','외국계','프로그램', '외인비'], axis=1) # axis=1 컬럼 삭제할 때 필요함
 x1 = np.array(x1)
-x2 = KD.drop(['일자','고가','저가',"Unnamed: 6",'전일비','등락률','시가','종가','신용비','개인','기관','외인(수량)','외국계','프로그램', '외인비'], axis=1)
+x2 = KD.drop(['일자','고가','저가',"Unnamed: 6",'전일비','등락률','거래량','금액(백만)','신용비','개인','기관','외인(수량)','외국계','프로그램', '외인비'], axis=1)
 x2 = np.array(x2)
-
-# print(x1)
-# print(x2)
-
 
 def split_xy(dataset, time_steps, y_column):
     x, y =list(),list()
     for i in range(len(dataset)): 
         x_end_number = i + time_steps       
-        y_end_number = x_end_number + y_column                   
+        y_end_number = x_end_number + y_column                  
     
         if y_end_number > len(dataset):
             break
@@ -86,10 +82,10 @@ es = EarlyStopping(monitor='val_loss', patience=10, mode='auto',
                    verbose=1, restore_best_weights=True)
 mcp = ModelCheckpoint (monitor = 'val_loss', mode = 'min', verbose = 1, save_best_only=True,
                        filepath = '../Study/_ModelCheckPoint/kovt.hdf5')
-model.fit([x1_train,x2_train], [y1_train,y2_train], epochs=1000, batch_size=1,
-          validation_split=0.3)
+model.fit([x1_train,x2_train], [y1_train,y2_train], epochs=300, batch_size=2,
+          validation_split=0.1)
 
-# model = load_model ('../_test/_save/kovt3.h5')
+# model = load_model ('../_test/_save/kovt23.h5')
 
 model.save('../_test/_save/kovt4.h5')
 
@@ -97,10 +93,10 @@ model.save('../_test/_save/kovt4.h5')
 loss = model.evaluate ([x1_test, x2_test], [y1_test,y2_test], batch_size=1)
 print('loss :', loss) #loss :
 y1_pred, y2_pred = model.predict([x1, x2])
-print('삼성전자 거래량 예측값 : ', y1_pred[-1])
-print('키움증권 거래량 예측값 : ', y2_pred[-1])
+print('삼성예측값 : ', y1_pred[1])
+print('키움예측값 : ', y2_pred[1])
 
 '''
-삼성전자 거래량 예측값 :  [77218.99]
-키움증권 거래량 예측값 :  [107550.266]
+삼성예측값 :  [77218.99]
+키움예측값 :  [107550.266]
 '''
