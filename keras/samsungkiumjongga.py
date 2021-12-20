@@ -23,18 +23,18 @@ def split_xy(dataset, time_steps, y_column):
     x, y =list(),list()
     for i in range(len(dataset)): 
         x_end_number = i + time_steps       
-        y_end_number = x_end_number + y_column - 1                  
+        y_end_number = x_end_number + y_column                  
     
         if y_end_number > len(dataset):
             break
         tmp_x = dataset[i:x_end_number, :-1]
-        tmp_y = dataset[x_end_number-1:y_end_number, -1]
+        tmp_y = dataset[x_end_number-1:y_end_number]
         x.append(tmp_x)
         y.append(tmp_y)
     return np.array(x), np.array(y)
     
-x1, y1 = split_xy(x1,4,2)
-x2, y2 = split_xy(x2,4,2)
+x1, y1 = split_xy(x1,4,1)
+x2, y2 = split_xy(x2,4,1)
 
 x1_train, x1_test, y1_train, y1_test = train_test_split(x1,y1,
         train_size =0.7, shuffle= True, random_state = 42)
@@ -83,7 +83,7 @@ es = EarlyStopping(monitor='val_loss', patience=10, mode='auto',
 mcp = ModelCheckpoint (monitor = 'val_loss', mode = 'min', verbose = 1, save_best_only=True,
                        filepath = '../Study/_ModelCheckPoint/kovt.hdf5')
 model.fit([x1_train,x2_train], [y1_train,y2_train], epochs=300, batch_size=2,
-          validation_split=0.3)
+          validation_split=0.1)
 
 # model = load_model ('../_test/_save/kovt3.h5')
 
@@ -93,8 +93,8 @@ model.save('../_test/_save/kovt4.h5')
 loss = model.evaluate ([x1_test, x2_test], [y1_test,y2_test], batch_size=1)
 print('loss :', loss) #loss :
 y1_pred, y2_pred = model.predict([x1, x2])
-print('삼성예측값 : ', y1_pred[-1])
-print('키움예측값 : ', y2_pred[-1])
+print('삼성예측값 : ', y1_pred[1])
+print('키움예측값 : ', y2_pred[1])
 
 '''
 삼성예측값 :  [77218.99]
