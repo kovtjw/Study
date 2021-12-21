@@ -9,6 +9,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 
 path = '../_data/juga predict/'  
 SD = pd.read_csv(path + '삼성전자.csv',thousands=',')
+SD = SD.drop(range(7, 1120), axis=0)                               
 KD = pd.read_csv(path + '키움증권.csv',thousands=',')
 
 SD = SD.drop(range(10, 1120), axis=0)
@@ -41,8 +42,8 @@ def split_xy(dataset, time_steps, y_column):
     return np.array(x), np.array(y)
     
     
-x1, y1 = split_xy(x1,5,1)
-x2, y2 = split_xy(x2,5,1)
+x1, y1 = split_xy(x1,5,3)
+x2, y2 = split_xy(x2,5,3)
 # y1 = np.log1p(y1)
 # y2 = np.log1p(y2)
 
@@ -50,7 +51,7 @@ print(x1)
 print(x2)
 (y1)
 (y2)
-'''
+
 x1_train, x1_test, y1_train, y1_test = train_test_split(x1,y1,
         train_size =0.7, shuffle= True, random_state = 42)
 x2_train, x2_test,y2_train,y2_test = train_test_split(x2,y2,
@@ -104,15 +105,15 @@ hist = model.fit([x1_train,x2_train], [y1_train,y2_train], epochs=1000, batch_si
 
 model.save('../_test/_save/kovt4.h5')
 
+
 #4. 평가, 예측
 loss = model.evaluate ([x1_test, x2_test], [y1_test,y2_test], batch_size=1)
+print('loss :', loss)
+pred1 = np.array(x1[-5:,1:]).reshape(1,5,6)
+pred2 = np.array(x2[-5:,1:]).reshape(1,5,6)
 
-print('loss :', loss) #loss :
-y1_pred, y2_pred = model.predict([x1, x2])
-# y1_pred, y2_pred = np.expm1(y1_pred, y2_pred)
-print('삼성전자 거래량 예측값 : ', y1_pred)
-print('키움증권 거래량 예측값 : ', y2_pred)
-'''
+result1, result2 = model.predict([pred1, pred2])
+
 
 '''
 
