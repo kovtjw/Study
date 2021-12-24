@@ -24,7 +24,7 @@ def models(model):
     elif model == 'tree':
         mod =  DecisionTreeClassifier(max_depth=5)
     elif model == 'forest':
-        mod =  RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)
+        mod =  RandomForestClassifier(max_depth=0.5, n_estimators=10, max_features=0.5)
     elif model == 'mlp':
         mod = MLPClassifier(alpha=1, max_iter=1000)
     elif model == 'adaboost':
@@ -36,7 +36,7 @@ def models(model):
     return mod
 
 ## Data load
-datapath = 'C:/Users/ImedisynRnD2/Desktop/KTH/기타/DaconHRV/dataset/'
+datapath = '../_data/dacon/cardiovascular disease/'
 train_data = pd.read_csv(datapath + 'train.csv').to_numpy()
 test_data = pd.read_csv(datapath + 'test.csv').to_numpy()
 
@@ -58,7 +58,7 @@ for model in tqdm(model_list, desc = 'Models are training and predicting ... '):
 
     #Make answer sheet
     savepath = datapath + 'answers/' #정답지 저장 경로
-    with open(savepath + '%s_answer.csv' % model_list[cnt], 'w', newline='') as f:
+    with open(savepath + '%s_answer2.csv' % model_list[cnt], 'w', newline='') as f:
         sheet = csv.writer(f)
         sheet.writerow(['id', 'target'])
         for idx, p in enumerate(pred):

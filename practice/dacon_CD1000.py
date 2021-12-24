@@ -1,154 +1,112 @@
+from tensorflow.keras.models import Sequential, Model, load_model
+from tensorflow.keras.layers import Dense, Input, Dropout
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler,MaxAbsScaler, LabelEncoder
 import numpy as np
 import pandas as pd
-
-
-import lightgbm as lgb
-from lightgbm import LGBMClassifier
-
-from  bayes_opt import BayesianOptimization
-from sklearn.model_selection import cross_val_score
+from tensorflow.keras.utils import to_categorical
+import matplotlib.pyplot as plt
+import seaborn as sns 
 from sklearn.metrics import f1_score
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.ensemble import VotingClassifier
+from sklearn.metrics import accuracy_score
 
 
-import warnings
+# 1. 데이터
 
-warnings.filterwarnings('ignore')
+path = '../_data/dacon/cardiovascular disease/'
+train = pd.read_csv(path+'train.csv')
+test_file = pd.read_csv(path+'test.csv')
+submit_file = pd.read_csv(path + 'sample_submission.csv')
 
-SEED = 42
 
-np.random.seed(SEED)
-bounds_LGB = {
-    'num_leaves': (100, 800), 
-    'min_data_in_leaf': (0, 150),
-    'bagging_fraction' : (0.3, 0.9),
-    'feature_fraction' : (0.3, 0.9),
-    'min_child_weight': (0.01, 1.),   
-    'reg_alpha': (0.01, 1.), 
-    'reg_lambda': (0.01, 1),
-    'max_depth':(6, 23),
-}
+# print(train.shape)  # (151, 15)
+# print(test_file.shape)  # (152, 14)
+# print(submit_file.shape) # (152, 2)
 
-def build_lgb(x, y, val_x, val_y, init_points=30, n_iter=50, cv=4, param=True, verbose=2, is_test=False, SEED=42):
-    def LGB_bayesian(
-        num_leaves, 
-        bagging_fraction,
-        feature_fraction,
-        min_child_weight, 
-        min_data_in_leaf,
-        max_depth,
-        reg_alpha,
-        reg_lambda,
-         ):
-        # LightGBM expects next three parameters need to be integer. 
-        num_leaves = int(num_leaves)
-        min_data_in_leaf = int(min_data_in_leaf)
-        max_depth = int(max_depth)
+x = train.drop(['id','target'],axis = 1)
+test_file = test_file.drop(['id'],axis = 1)
+y = train['target']
 
-        assert type(num_leaves) == int
-        assert type(min_data_in_leaf) == int
-        assert type(max_depth) == int
+# x['target'] = y
+# print(x.corr())
+# plt.figure(figsize=(10,10))
+# sns.heatmap(data=x.corr(), square=True, annot=True, cbar=True)
+# plt.show()
 
-        params = {
-                  'num_leaves': num_leaves, 
-                  'min_data_in_leaf': min_data_in_leaf,
-                  'min_child_weight': min_child_weight,
-                  'bagging_fraction' : bagging_fraction,
-                  'feature_fraction' : feature_fraction,
-                  'learning_rate' : 0.05,
-                  'max_depth': max_depth,
-                  'reg_alpha': reg_alpha,
-                  'reg_lambda': reg_lambda,
-                  'objective': 'binary',
-                  'save_binary': True,
-                  'seed': SEED,
-                  'feature_fraction_seed': SEED,
-                  'bagging_seed': SEED,
-                  'drop_seed': SEED,
-                  'data_random_seed': SEED,
-                  'boosting': 'gbdt', 
-                  'verbose': 0,
-                  'boost_from_average': True,
-                  'metric':'auc',
-                  'n_estimators': 1000,
-                  'n_jobs': -1,
-        }    
+# print(x.shape)  # (151, 11)
+# print(test_file.shape)  # (152, 10)
+# print(submit_file.shape)
 
-        ## set reg options
-        model = lgb.LGBMClassifier(**params)
-        model.fit(x, y, eval_set=(val_x, val_y), early_stopping_rounds=30, verbose=0)
-        pred = model.predict(val_x)
-        score = f1_score(val_y, pred)
-        return score
-    
-    optimizer = BayesianOptimization(LGB_bayesian, bounds_LGB, random_state=SEED, verbose=verbose)
-    init_points = init_points
-    n_iter = n_iter
+x_train, x_test, y_train, y_test = train_test_split(x,y,
+         train_size =0.7, shuffle=True, random_state = 2)
 
-    optimizer.maximize(init_points=init_points, n_iter=n_iter)
-    
-    param_lgb = {
-        'min_data_in_leaf': int(optimizer.max['params']['min_data_in_leaf']), 
-        'num_leaves': int(optimizer.max['params']['num_leaves']), 
-        'learning_rate': 0.05,
-        'min_child_weight': optimizer.max['params']['min_child_weight'],
-        'bagging_fraction': optimizer.max['params']['bagging_fraction'], 
-        'feature_fraction': optimizer.max['params']['feature_fraction'],
-        'reg_lambda': optimizer.max['params']['reg_lambda'],
-        'reg_alpha': optimizer.max['params']['reg_alpha'],
-        'max_depth': int(optimizer.max['params']['max_depth']), 
-        'objective': 'binary',
-        'save_binary': True,
-        'seed': SEED,
-        'feature_fraction_seed': SEED,
-        'bagging_seed': SEED,
-        'drop_seed': SEED,
-        'data_random_seed': SEED,
-        'boosting': 'gbdt', 
-        'verbose': -1,
-        'boost_from_average': True,
-        'metric':'auc',
-        'n_estimators': 1000,
-        'n_jobs': -1,
-    }
+# print(y_train.shape)  # (135, 14)
+# print(y_train.shape)
+# print(x_test.shape)  # (16, 14)
+# print(y_test.shape)
 
-    params = param_lgb.copy()
+# scaler = RobustScaler()         
+# scaler.fit(x_train)
+# x_train = scaler.fit_transform(x_train)
+# x_test = scaler.transform(x_test)
 
-    model = lgb.LGBMClassifier(**params)
-    model.fit(x, y, eval_set=(val_x, val_y), early_stopping_rounds=30, verbose=0)
-    if param:
-        return model, params
-    else:
-        return model
-    
-def preprocessing(_df):
-    df = _df.copy()
-    # write what you want
-    return df
-datapath = '../_data/dacon/cardiovascular disease/'
-train = pd.read_csv(datapath + 'train.csv', index_col='id')
-test = pd.read_csv(datapath + 'test.csv', index_col='id')
+#2. 모델구성
+def mlp_model():
+    model = Sequential()
+    model.add(Dense(32, input_dim=13)) 
+    model.add(Dropout(0.3)) 
+    model.add(Dense(16, activation='relu'))
+    model.add(Dropout(0.5)) 
+    model.add(Dense(8, activation='relu'))
+    model.add(Dense(1, activation='sigmoid'))
 
-sub = pd.read_csv(datapath + 'sample_submission.csv', index_col='id')
 
-tr_X = preprocessing(train.drop('target', axis=1))
-test_X = preprocessing(test)
+#3. 컴파일, 훈련
+    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=['accuracy'])
+    return model
+model = mlp_model()
 
-tr_y = train['target']
+# 서로 다른 모델을 3개 만들어 합친다
+model1 = KerasClassifier(build_fn = mlp_model, epochs = 200, verbose = 1)
+model1._estimator_type="classifier" 
+model2 = KerasClassifier(build_fn = mlp_model, epochs = 400, verbose = 1)
+model2._estimator_type="classifier"
+model3 = KerasClassifier(build_fn = mlp_model, epochs = 200, verbose = 1)
+model3._estimator_type="classifier"
+model4 = KerasClassifier(build_fn = mlp_model, epochs = 400, verbose = 1)
+model4._estimator_type="classifier"
+model5 = KerasClassifier(build_fn = mlp_model, epochs = 200, verbose = 1)
+model5._estimator_type="classifier"
 
-from sklearn.model_selection import StratifiedKFold
 
-n_fold = 10
-sf = StratifiedKFold(n_fold, shuffle=True, random_state=SEED)
+ensemble_clf = VotingClassifier(estimators = [('model1', model1), 
+                                              ('model2', model2), 
+                                              ('model3', model3), 
+                                              ('model4', model4), 
+                                              ('model5', model5)], voting = 'soft')
+ensemble_clf.fit(x_train, y_train)
 
-preds = []
-thresholds = []
-c = 1
-for tr_idx, val_idx in sf.split(tr_X, tr_y):
-    print('#'*25, f'CV {c}')
-    model, _ = build_lgb(tr_X.iloc[tr_idx], tr_y.iloc[tr_idx], tr_X.iloc[val_idx], tr_y.iloc[val_idx], 15, 15)
-    _preds = model.predict(test_X)
-    preds.append(_preds)
-    c += 1
-    
-sub['target'] = np.where(np.mean(preds, 0)>0.5, 1, 0)
-sub.to_csv(datapath+"hi2.csv", index = False)
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+es = EarlyStopping(monitor='val_loss', patience=50, mode='min', verbose=1) 
+
+model.fit(x_train, y_train, epochs=600, batch_size=2,
+          validation_split=0.2, callbacks=[es])
+# 서로 다른 모델을 3개 만들어 합친다
+
+#4. 평가, 예측
+print ('====================== 1. 기본출력 ========================')
+loss = model.evaluate(x_test, y_test)
+y_pred = model.predict(x_test)
+y_pred = y_pred.round(0).astype(int)
+f1 = f1_score(y_pred, y_test)
+print('f1 스코어 :',f1)
+
+results = model.predict(test_file)
+results = results.round(0).astype(int)
+
+##################### 제출용 제작 ####################
+
+submit_file['target'] = results
+submit_file.to_csv(path+"likedog4.csv", index = False)
