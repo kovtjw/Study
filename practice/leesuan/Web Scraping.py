@@ -39,8 +39,63 @@ else:
 import re
 import json
 import math
-import request
+import requests
 import urllib.request
 import urllib.error
 import urllib.parse
-from bs4 import Beautifulsoup
+from bs4 import BeautifulSoup
+
+naver_client_id = "gTqNaqyjog14g27TrawW"
+naver_client_secret = "VrNLxqvvkm"
+
+def get_blog_count(query, display):
+    encode_query = urllib.parse.quote(query)
+    search_url = "https://openapi.naver.com/v1/search/blog?query=" + encode_query
+    request = urllib.request.Request(search_url)
+
+    request.add_header('X-NAVER-CLIENT-ID', naver_client_id)
+    request.add_header('X-NAVER-CLIENT-PW', naver_client_secret)
+
+    response = urllib.request.urlopen(request)
+    response_code = response.getcode()
+
+    if response_code is 200:
+        response_body = response.read()
+        response_body_dict = json.loads(response_body.decode('utf-8'))
+        
+        print('Last Build date:'+ str(response_body_dict['lastBuildDate']))
+        print('Total :'+str (response_body_dict['total']))
+        print('Start :'+str (response_body_dict['start']))
+        print('Display :'+str (response_body_dict['display']))
+        
+        if response_body_dict['total'] ==0:
+            blog_count = 0
+        else:
+            blog_total = math.ceil(response_body_dict['total']/int(display))
+            
+            if blog_total >= 1000:
+                blog_count = 1000
+            else:
+                blog_count = blog_total
+                
+            print('Blog total:' + str(blog_total))
+            print('Blog count:' + str(blog_count))
+            
+    return blog_count
+            
+        
+        
+    
+
+if __name__ == '__main__':
+    no = 0
+    query = '손흥민'
+    display = 10
+    start =1
+    sorf = 'date'
+    
+    fs = open(query+".txt", 'a', encoding='utf-8')
+
+    blog_count = get_blog_count(query, display)
+
+    fs.close()
