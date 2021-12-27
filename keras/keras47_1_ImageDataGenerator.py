@@ -27,6 +27,7 @@ xy_train = train_datagen.flow_from_directory(        # directory = folder
     class_mode = 'binary',
     shuffle = True,
     )           
+# Found 160 images belonging to 2 classes.
 
 xy_test = test_datagen.flow_from_directory(
     '../_data/image/brain/test',
@@ -34,3 +35,20 @@ xy_test = test_datagen.flow_from_directory(
     batch_size = 5, 
     class_mode = 'binary',
 )
+# Found 120 images belonging to 2 classes.
+
+# print(xy_train)
+# <tensorflow.python.keras.preprocessing.image.DirectoryIterator object at 0x000001DCB78B5F40>
+# print(xy_train[31])   
+#  y값 : array([1., 0., 1., 0., 0.], dtype=float32)) 5개 > batch_size를 5로 나누었기 때문에 // 160을 batch 로 나눈 값까지 나온다.
+# print(xy_train[0][0]) # x 값
+# print(xy_train[0][1]) # y 값
+# print(xy_train[0][2]) error
+print(xy_train[0][0].shape, xy_train[0][1].shape) 
+#  첫 번째의 x 값의 shape(5, 150, 150, 3)    (batch, 이미지의 가로세로 데이터, 흑백or컬러) 
+# y 값의 shape(5,)
+
+print(type(xy_train))   # <class 'tensorflow.python.keras.preprocessing.image.DirectoryIterator'>
+print(type(xy_train[0]))  # <class 'tuple'>
+print(type(xy_train[0][0])) # x 값 <class 'numpy.ndarray'>
+print(type(xy_train[0][1])) # y 값 <class 'numpy.ndarray'>
