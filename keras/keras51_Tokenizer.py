@@ -1,6 +1,7 @@
 from tensorflow.keras.preprocessing.text import Tokenizer
 
-text = '나는 진짜 매우 맛있는 밥을 진짜 마구 마구 먹었다.'   
+# text = '나는 진짜 매우 맛있는 밥을 진짜 마구 마구 먹었다.'   
+text = '나는 오늘 정말 정말 재밌는 영화를 매우 매우 많이 봤다'   
 
 token = Tokenizer()
 token.fit_on_texts([text])

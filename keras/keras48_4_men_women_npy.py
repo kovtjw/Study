@@ -35,3 +35,46 @@ print('loss:', loss[-1])
 print('val_loss:', val_loss[-1])
 print('acc:', acc[-1])
 print('val_acc:',val_acc [-1])
+
+#4. 평가, 예측
+
+import matplotlib.pyplot as plt
+from tensorflow.keras.preprocessing import image
+
+# 샘플 케이스 경로지정
+#Found 1 images belonging to 1 classes.
+sample_directory = '../_data/image/predict/'
+sample_image = sample_directory + "123.jpg"
+
+# 샘플 케이스 확인
+# image_ = plt.imread(str(sample_image))
+# plt.title("Test Case")
+# plt.imshow(image_)
+# plt.axis('Off')
+# plt.show()
+
+print("-- Evaluate --")
+scores = model.evaluate_generator(validation_generator, steps=5)
+print("%s: %.2f%%" %(model.metrics_names[1], scores[1]*100))
+
+print("-- Predict --")
+image_ = image.load_img(str(sample_image), target_size=(50, 50))
+x = image.img_to_array(image_)
+x = np.expand_dims(x, axis=0)
+x /=255.
+images = np.vstack([x])
+classes = model.predict(images, batch_size=40)
+# y_predict = np.argmax(classes)#NDIMS
+
+print(classes)
+validation_generator.reset()
+print(validation_generator.class_indices)
+# {'hores': 0, 'human': 1}
+if(classes[0][0]<=0.5):
+    hores = 100 - classes[0][0]*100
+    print(f"당신은 {round(hores,2)} % 확률로 남자 입니다")
+elif(classes[0][0]>0.5):
+    human = classes[0][0]*100
+    print(f"당신은 {round(human,2)} % 확률로 여자 입니다")
+else:
+    print("ERROR")

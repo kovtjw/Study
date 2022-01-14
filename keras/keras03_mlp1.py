@@ -1,7 +1,7 @@
 import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
-# mlp 뜻 : 멀티 레이어~
+# mlp 뜻 : 멀티 레이어 퍼셉트론
 
 #1. 데이터
 x = np.array([[1,2,3,4,5,6,7,8,9,10],
