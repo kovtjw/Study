@@ -15,7 +15,7 @@ datasets = load_iris()
 x = datasets.data
 y = datasets.target
 
-from sklearn.model_selection import train_test_split, KFold, cross_val_score
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, StratifiedKFold
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
         shuffle= True, random_state=100, train_size = 0.8)

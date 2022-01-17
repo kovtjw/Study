@@ -25,3 +25,15 @@ test_file = test_file.drop(['datetime'], axis=1)
 y = train['count']
 x_train, x_test, y_train, y_test = train_test_split(x,y,
         train_size =0.9, shuffle=True, random_state = 42)
+n_splits = 5
+
+kfold = KFold(n_splits = n_splits, shuffle = True, random_state=100)
+
+model = XGBRegressor()
+scores = cross_val_score(model, x_train, y_train, cv = kfold)
+print('ACC :',scores, "\ncross_val_score :", round(np.mean(scores),4))
+
+'''
+ACC : [0.32107652 0.33257281 0.33484371 0.31428579 0.32245078] 
+cross_val_score : 0.325
+'''

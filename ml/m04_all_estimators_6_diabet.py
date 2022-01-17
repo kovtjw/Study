@@ -7,6 +7,7 @@ from sklearn.datasets import load_iris
 from sklearn.model_selection import train_test_split
 import warnings
 warnings.filterwarnings('ignore')
+
 #1. 데이터
 datasets = load_diabetes()
 x = datasets.data
