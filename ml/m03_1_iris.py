@@ -6,30 +6,14 @@ from sklearn.model_selection import train_test_split
 #1. 데이터
 
 datasets = load_iris()
-# print(datasets.DESCR)
-# print(datasets.feature_names)
 x = datasets.data
 y = datasets.target
-# print(x.shape, y.shape) #(150, 4) (150,)
-# print(y)
-# print(np.unique(y))
-# from sklearn.preprocessing import OneHotEncoder
-# from tensorflow.keras.utils import to_categorical
-# y = to_categorical(y)
-# print(y)
-# print(y.shape) # (150,3)
-
 
 x_train, x_test, y_train, y_test = train_test_split(x,y,
         train_size =0.8, shuffle=True, random_state = 100)
 
-# print(x_train.shape, y_train.shape)  # (120, 4) (120, 3)
-# print(x_test.shape, y_test.shape)   # (30, 4) (30, 3)
-
 
 #2. 모델구성
-# from tensorflow.keras.models import Sequential
-# from tensorflow.keras.layers import Dense
 from sklearn.linear_model import Perceptron
 from sklearn.svm import LinearSVC, SVC
 from sklearn.neighbors import KNeighborsClassifier

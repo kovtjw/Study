@@ -22,11 +22,11 @@ n_splits = 5
 kfold = KFold(n_splits = n_splits, shuffle = True, random_state=100)
 
 parameters = [
-    {'C':[1,10,100,1000], 'kernel':['linear'], 'degree' : [3,4,5]},  # 12개
-    {'C':[1, 10 ,100], 'kernel':['rbf'], 'gamma':[0.001, 0.0001]},   # 6개
-    {'C':[1, 10, 100, 1000], 'kernel': ['sigmoid'], 
-     'gamma':[0.01, 0.001, 0.0001], 'degree': [3,4]}                 # 24개
-]                                                                    # 총 42번(더해준다) 
+    {'C':[1,10,100,1000,10000], 'kernel':['linear'], 'degree' : [3,4,5,6,7]},  # 25개
+    {'C':[1, 10 ,100,1000], 'kernel':['rbf'], 'gamma':[0.001, 0.0001,0.01]},   # 12개
+    {'C':[1, 10, 100, 1000,10000], 'kernel': ['sigmoid'], 
+     'gamma':[0.01, 0.001, 0.0001], 'degree': [3,4,5,6,7]}                 # 75개
+]                                                                     # 총 112번(더해준다) 
 
 
 #2. 모델 구성

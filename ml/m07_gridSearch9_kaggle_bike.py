@@ -1,26 +1,34 @@
+from sklearn.model_selection import train_test_split
+import warnings
+warnings.filterwarnings('ignore')
 import numpy as np
-from sklearn.datasets import load_diabetes
-from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor 
-from xgboost import XGBClassifier
-from lightgbm import LGBMClassifier
-from catboost import CatBoostClassifier
-from sklearn.model_selection import train_test_split, KFold
-from sklearn.model_selection import cross_val_score, StratifiedKFold, GridSearchCV
-from sklearn.metrics import accuracy_score, r2_score
-import pandas as pd
+import pandas as pd 
+from sklearn.metrics import r2_score, mean_squared_error #mse
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense,Conv1D
+from sklearn.ensemble import RandomForestRegressor
+import time
+from sklearn.preprocessing import MinMaxScaler, StandardScaler, RobustScaler, MaxAbsScaler
+from sklearn.model_selection import train_test_split, KFold, cross_val_score, StratifiedKFold, GridSearchCV
+from xgboost import XGBRegressor
+from lightgbm import LGBMRegressor
+#1. 데이터 
+path = '../_data/kaggle/bike/'  
+train = pd.read_csv(path+'train.csv')  
+# print(train)      # (10886, 12)
+test_file = pd.read_csv(path+'test.csv')
+# print(test.shape)    # (6493, 9)
+submit_file = pd.read_csv(path+ 'sampleSubmission.csv')
+x = train.drop(['datetime', 'casual','registered','count'], axis=1) # axis=1 컬럼 삭제할 때 필요함
+test_file = test_file.drop(['datetime'], axis=1) 
 
-# 실습  // 모델 : RandomForestClassifier
-
-
-#1. 데이터
-datasets = load_diabetes()
-x = datasets.data
-y = datasets.target
-
-
+y = train['count']
 x_train, x_test, y_train, y_test = train_test_split(x,y,
-        shuffle= True, random_state=66, train_size = 0.8)
+        train_size =0.9, shuffle=True, random_state = 42)
 n_splits = 5
+
+
 kfold = KFold(n_splits = n_splits, shuffle = True, random_state=100)
 
 parameters = [

@@ -3,9 +3,7 @@ from sklearn.svm import LinearSVC, SVC
 from sklearn.linear_model import Perceptron   ## 원조
 from sklearn.metrics import accuracy_score
 
-
 ###### poli #######
-
 
 #1. 데이터   ### xor 데이터 ### 
 x_data = [[0,0],[0,1],[1,0],[1,1]]
@@ -15,7 +13,6 @@ y_data = [0, 1, 1, 0]
 # model = LinearSVC()
 # model = Perceptron()     # xor에 막혔다. 
 model = SVC()
-
 
 #3. 훈련
 model.fit(x_data, y_data)
