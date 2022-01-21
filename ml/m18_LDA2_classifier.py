@@ -14,8 +14,8 @@ warnings.filterwarnings(action='ignore')
 #1. 데이터
 # datasets = load_iris()
 # datasets = load_breast_cancer()
-# datasets = load_wine()
-datasets = fetch_covtype()
+datasets = load_wine()
+# datasets = fetch_covtype()
 x = datasets.data
 y = datasets.target
 print('LDA 전:',x.shape)
