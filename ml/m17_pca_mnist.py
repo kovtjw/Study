@@ -20,15 +20,16 @@ print(cumsum)
 # # plt.plot(pca_EVR)
 # plt.grid()
 # plt.show()
-print(np.argmax(cumsum))  # 712 
-print(np.argmax(cumsum>0.999)) # 330
+print(np.argmax(cumsum))  # 712 > 0부터 시작하기 때문에 1을 더해야 한다.
+# 1이 나오는 시작점 
+print(np.argmax(cumsum == 1.0)+1) # 330
 # print(np.argwhere(cumsum))
 
 #########################################################
 ## 실습                                                 #
 ## pca를 통해 0.95 이상인 n_components 가 몇 개인지 찾기#
-# 0.95 >> 153                                           #
-# 0.99 >> 330                                           #
-# 0.999 >> 485                                          #
+# 0.95 >> 154                                           #
+# 0.99 >> 331                                           #
+# 0.999 >> 486                                          #
 # 1.0                                                   #
 #########################################################

@@ -39,17 +39,13 @@ model.add(Dense(10, activation = 'softmax'))
 
 
 #3. 컴파일, 훈련
+import time
 model.compile(loss='categorical_crossentropy', optimizer = 'adam', metrics=['accuracy'])
- 
-from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
-es = EarlyStopping(monitor='val_loss', patience=5, mode='auto',
-                   verbose=1, restore_best_weights=False) # restore_best_weights=True : 최종값 이전에 가장 좋았던 값 도출함
-mcp = ModelCheckpoint (monitor = 'val_loss', mode = 'min', verbose = 1, save_best_only=True,
-                       filepath = './_ModelCheckPoint/keras27_5_MCP.hdf5')
+start = time.time()
 model.fit(x_train, y_train, epochs=16, batch_size=16,
-          validation_split=0.3, callbacks=[es,mcp])
+          validation_split=0.3)
+end = time.time()
 
-model.save('./_save/keras30_2_save_model.h5')
 
 
 #4. 평가, 예측
