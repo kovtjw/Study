@@ -7,7 +7,7 @@ x = datasets.data
 y = datasets.target
 print(x.shape)   # (506, 13)
 
-pca = PCA(n_components=20)
+pca = PCA(n_components=30)
 x = pca.fit_transform(x)
 # print(x)
 print(x.shape)  # (506, 8)

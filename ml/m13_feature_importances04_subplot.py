@@ -63,13 +63,13 @@ def plot_feature_importance_dataset(model):
     plt.ylim(-1, n_features)
     
 plt.figure(figsize=(20,20))
-plt.subplot(3, 3, 1)
+plt.subplot(2, 2, 1)
 plot_feature_importance_dataset(model1)
-plt.subplot(3, 3, 2)
+plt.subplot(2, 2, 2)
 plot_feature_importance_dataset(model2)
-plt.subplot(3, 3, 3)
+plt.subplot(2, 2, 3)
 plot_feature_importance_dataset(model3)
-plt.subplot(3, 3, 4)
+plt.subplot(2, 2, 4)
 plot_feature_importance_dataset(model4)
 plt.show()
 
