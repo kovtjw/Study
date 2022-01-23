@@ -16,7 +16,6 @@ import pandas as pd
 HalvingGridSearchCV 
 처음 데이터의 일부를 뽑아서 한 번 검증하여 30개 정도를 추리고, 
 추려낸 30개를 다시 한 번 돌린다.
-
 '''
 
 #1. 데이터

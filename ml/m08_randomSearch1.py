@@ -28,7 +28,6 @@ parameters = [
      'gamma':[0.01, 0.001, 0.0001], 'degree': [3,4,5,6,7]}                 # 75개
 ]                                                                    # 총 112번(더해준다) 
 
-
 #2. 모델 구성
 # model = GridSearchCV(SVC(), parameters, cv = kfold, verbose = 3,
 #                      refit=True, n_jobs=1)   
