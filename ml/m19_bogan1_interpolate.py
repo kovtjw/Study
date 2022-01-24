@@ -23,6 +23,7 @@ print(ts)
 ts = ts.interpolate()
 print(ts)
 
+
 '''
 2022-01-24     2.0
 2022-01-25     NaN
