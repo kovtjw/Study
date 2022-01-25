@@ -26,5 +26,5 @@ imputer.fit(data[['a']])
 data2= imputer.transform(data[['a']])
 print(data2)
 
-# fit에는 datagrame이 들어가는데, 우리는 컬럼만 바꾸고 싶다. 
+# fit에는 dataframe이 들어가는데, 우리는 컬럼만 바꾸고 싶다. 
 # 시리즈를 넣으면 에러가 난다. 

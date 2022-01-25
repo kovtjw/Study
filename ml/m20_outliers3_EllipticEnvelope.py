@@ -13,14 +13,16 @@ aaa = np.transpose(aaa)
 from sklearn.covariance import EllipticEnvelope
 outliers = EllipticEnvelope(contamination=.15)
 pred = outliers.fit_predict(aaa)
-print(pred.shape) # (13,)
+print(pred) # (13,)
 
-b = list(pred)
-print(b.count(-1))
-index_for_outlier = np.where(pred == -1)
-print('outier indexex are', index_for_outlier)
-outlier_value = aaa[index_for_outlier]
-print('outlier_value :', outlier_value)
+
+
+# b = list(pred)
+# print(b.count(-1))
+# index_for_outlier = np.where(pred == -1)
+# print('outier indexex are', index_for_outlier)
+# outlier_value = aaa[index_for_outlier]
+# print('outlier_value :', outlier_value)
 # outliers.fit(data1)
 # outliers.fit(data2)
 # result1 = outliers.predict(data1)

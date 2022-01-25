@@ -17,7 +17,7 @@ dates = ['1/24/2022','1/25/2022','1/26/2022',
          '1/27/2022','1/28/2022']
 dates = pd.to_datetime(dates)
 print(dates)
-ts = pd.Series([2, np.nan, np.nan, 8, 10], index =dates)
+ts = pd.Series([2, np.nan, np.nan, 8, 10], index = dates)
 print(ts)
 
 ts = ts.interpolate()

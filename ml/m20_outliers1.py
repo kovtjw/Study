@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import matplotlib.patheffects as path_effects
 
-aaa = np.array([1,2, -1000, 4, 5, 6, 7, 8, 90, 100, 500, 12, 13])
+
+aaa = np.array([1,2, -70, 4, 5, 6, 7, 8, 50, 60, 70, 12, 13])
 fig = plt.figure()
 fig1 = fig.add_subplot(1,2,1)
 
