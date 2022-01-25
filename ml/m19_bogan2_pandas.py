@@ -93,9 +93,17 @@ print(data2)
 data2 = data.fillna(0)
 print(data2)
 
+##################################### 특정 컬럼만!! ################################################
 
+means = data['a'].mean()
+print(means)  # 6.666666666666667
+data['a'] = data['a'].fillna(means)
+print(data)
 
-
+median = data['b'].median()
+print(median)
+data['b'] = data['b'].fillna(median)
+print(data)
 
 
 
