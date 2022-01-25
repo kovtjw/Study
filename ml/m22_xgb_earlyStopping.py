@@ -39,8 +39,8 @@ model = XGBRegressor(
     min_child_weight = 1,
     subsample = 1,
     colsample_bytree = 1,
-    reg_alpha = 0,              # 규제 : L1
-    # reg_lamda = 0,              # 규제 : L2
+    reg_alpha = 0,              # 규제 : L1 = lasso
+    # reg_lamda = 0,              # 규제 : L2 = ridge
 )
 
 #3. 훈련
