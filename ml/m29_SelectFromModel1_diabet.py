@@ -29,7 +29,9 @@ print('model.score :', score)
 
 # print(model.feature_importances_)
 # print(np.sort(model.feature_importances_))
-aaa = np.sort(model.feature_importances_)
+aaa = model.feature_importances_
+# aaa = np.sort(model.feature_importances_)
+
 '''
 [0.02593721 0.03284872 0.03821949 0.04788679 0.05547739 0.06321319
  0.06597802 0.07382318 0.19681741 0.39979857]
@@ -44,8 +46,34 @@ for thresh in aaa:
     
     selection_model = XGBRegressor(n_jobs = -1)
     selection_model.fit(select_x_train, y_train)
+    y_pred = selection_model.predict(select_x_test)
+    score = r2_score(y_test, y_pred)
+    print('Thresh = %.3f, n=%d, R2: %.2f%%'
+        %(thresh, select_x_train.shape[1], score*100))
+    
 
-y_pred = selection_model.predict(select_x_test)
-score = r2_score(y_test, y_pred)
-print('Thresh = %.3f, n=%d, R2: %.2f%%'
-      %(thresh, select_x_train.shape[1], score*100))
+# SelectFromModel(model,threshold = thresh, prefit = True) > moel에서 threshold의 값 미만의 값을 사용해서 돌린다.
+# 그리고 모델을 하나 뽑는다.
+ 
+'''
+(353, 10) (89, 10)
+Thresh = 0.026, n=10, R2: 23.96%
+(353, 9) (89, 9)
+Thresh = 0.033, n=9, R2: 27.03%
+(353, 8) (89, 8)
+Thresh = 0.038, n=8, R2: 23.87%
+(353, 7) (89, 7)
+Thresh = 0.048, n=7, R2: 26.48%
+(353, 6) (89, 6)
+Thresh = 0.055, n=6, R2: 30.09%
+(353, 5) (89, 5)
+Thresh = 0.063, n=5, R2: 27.41%
+(353, 4) (89, 4)
+Thresh = 0.066, n=4, R2: 29.84%
+(353, 3) (89, 3)
+Thresh = 0.074, n=3, R2: 23.88%
+(353, 2) (89, 2)
+Thresh = 0.197, n=2, R2: 14.30%
+(353, 1) (89, 1)
+Thresh = 0.400, n=1, R2: 2.56%
+'''
