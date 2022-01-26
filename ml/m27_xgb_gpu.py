@@ -2,7 +2,7 @@ from xgboost import XGBClassifier, XGBRegressor
 from sklearn.datasets import fetch_california_housing, load_boston, fetch_covtype
 from sklearn.preprocessing import MinMaxScaler, StandardScaler
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import r2_score, accuracy_score
+from sklearn.metrics import r2_score, accuracy_score, f1_score
 import time
 # import warnings
 # warnings.filterwarnings('ignore')
@@ -63,7 +63,6 @@ y_pred = model.predict(x_test)
 acc = accuracy_score(y_test, y_pred)
 print('r2 :',round(acc,4))
 print('걸린 시간 :', round(end-start, 4))
-
 
 '''
 results : 0.7355

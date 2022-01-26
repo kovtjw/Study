@@ -15,8 +15,6 @@ outliers = EllipticEnvelope(contamination=.15)
 pred = outliers.fit_predict(aaa)
 print(pred) # (13,)
 
-
-
 # b = list(pred)
 # print(b.count(-1))
 # index_for_outlier = np.where(pred == -1)
