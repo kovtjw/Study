@@ -31,22 +31,17 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 
 smote = SMOTE(random_state=66, k_neighbors=1)
 x_train, y_train = smote.fit_resample(x_train, y_train)
-new_x_train = x_train
-nuw_y_train = y_train
-# 저장 
-import pickle
-path = './_save/'
-pickle.dump(new_x_train, open(path + 'm31_smote_save.dat', 'wb'))
-pickle.dump(nuw_y_train, open(path + 'm32_smote_save.dat', 'wb'))
 
 scaler = QuantileTransformer()
 scaler.fit(x_train)
 x_train = scaler.transform(x_train)
 x_test = scaler.transform(x_test)
-np.save('./_save_npy/keras47_5_train_x.npy', arr = xy_train[0][0])
+
+np.save('./_save_npy/m30_x_train.npy', arr = x_train)
+np.save('./_save_npy/m31_x_train.npy', arr = x_train)
 
 #2. 모델
-model = LGBMClassifier(
+model = XGBClassifier(
     # # n_jobs = -1,  
     # n_estimators = 1000,
     # learning_rate = 0.025,

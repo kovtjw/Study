@@ -16,6 +16,7 @@ x = datasets.data
 y = datasets.target
 print(x.shape, y.shape) 
 print(pd.Series(y).value_counts())
+
 '''
 2    283301
 1    211840

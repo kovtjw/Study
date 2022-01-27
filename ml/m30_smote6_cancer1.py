@@ -21,8 +21,10 @@ print(x.shape, y.shape)  # (569, 30) (569,)
 x_train, x_test, y_train, y_test = train_test_split(x,y,
         train_size =0.8, shuffle=True, random_state = 66, stratify= y)  # stratify = y >> yes가 아니고, y(target)이다.
 
-# smote = SMOTE(random_state=66, k_neighbors=2)
-# x_train, y_train = smote.fit_resample(x_train, y_train)
+smote = SMOTE(random_state=66, k_neighbors=2)
+x_train, y_train = smote.fit_resample(x_train, y_train)
+np.save('./_save/m30_x_train.npy', arr = x_train)
+
 # 저장 
 # import pickle
 # path = './_save/'
