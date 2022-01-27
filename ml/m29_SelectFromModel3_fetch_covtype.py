@@ -51,7 +51,7 @@ for thresh in aaa:
     print(select_x_train.shape, select_x_test.shape)
     
     selection_model = XGBRegressor(n_jobs = -1)
-    selection_model.fit(select_x_train, y_train, eval_metric = 'merror')
+    selection_model.fit(select_x_train, y_train, eval_metric = 'mlogloss')
     y_pred = selection_model.predict(select_x_test)
     score = r2_score(y_test, y_pred)
     print('Thresh = %.3f, n=%d, R2: %.2f%%'
