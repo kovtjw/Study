@@ -1,49 +1,73 @@
-import pandas as pd 
-import numpy as np
-from sklearn.model_selection import train_test_split
-import warnings
-warnings.filterwarnings('ignore')
-from sklearn.preprocessing import QuantileTransformer, PowerTransformer
+from xgboost import XGBClassifier
 from sklearn.datasets import fetch_covtype
-from imblearn.over_sampling import SMOTE
-from xgboost import XGBRegressor, XGBClassifier
+from sklearn.model_selection import train_test_split
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler, PolynomialFeatures
+from sklearn.feature_selection import SelectFromModel
+import warnings
 from sklearn.metrics import accuracy_score, f1_score
-import time
+from imblearn.over_sampling import SMOTE
+warnings.filterwarnings('ignore')
 
-#1. 데이터
 datasets = fetch_covtype()
 x = datasets.data
 y = datasets.target
-print(x.shape, y.shape) 
-print(pd.Series(y).value_counts())
 
-'''
-2    283301
-1    211840
-3     35754
-7     20510
-6     17367
-5      9493
-4      2747
-'''
-x_train, x_test, y_train, y_test = train_test_split(x,y,
-        train_size =0.8, shuffle=True, random_state = 66, stratify= y)  # stratify = y >> yes가 아니고, y(target)이다.
-import pickle
-path = './_save/'
-x_train, y_train = pickle.load(open(path + 'm30_smote_save.dat','rb'))
+x_train, x_test, y_train, y_test = train_test_split(x, y,
+                 shuffle=True, random_state=66, train_size=0.8                                   
+                                                    )
+
+# import pickle
+# path = "D:/_save_npy/"
+# x_train = pickle.load(open(path + 'm30_smote_save_x_train.dat', 'rb'))
+# y_train = pickle.load(open(path + 'm30_smote_save_y_train.dat', 'rb'))
+
+# scaler = MinMaxScaler()
+# scaler = QuantileTransformer()
+# scaler = PowerTransformer()
+scaler = PolynomialFeatures()
+x_train = scaler.fit_transform(x_train)
+x_test = scaler.transform(x_test)
+
+#2. 모델구성
+model = XGBClassifier(
+                    # base_score=0.5, booster='gbtree', colsample_bylevel=1,
+                    # colsample_bynode=1, colsample_bytree=1, enable_categorical=False,
+                    # gamma=0, gpu_id=0, importance_type=None,
+                    # interaction_constraints='', learning_rate=0.300000012,
+                    # max_delta_step=0, max_depth=9, min_child_weight=1,
+                    # monotone_constraints='()', n_estimators=5000, n_jobs=12,
+                    # num_parallel_tree=1, objective='multi:softprob',
+                    # predictor='gpu_predictor', random_state=0, reg_alpha=0,
+                    # reg_lambda=1, scale_pos_weight=None, subsample=1,
+                    # tree_method='gpu_hist', validate_parameters=1, verbosity=None
+                      )
+
+
+import joblib
+model = joblib.load('D:\\Study\\_save\\m30_model.dat')
+
+#3. 컴파일, 훈련
+import time
 start = time.time()
-smote = SMOTE(random_state=66, k_neighbors=2)
-x_train, y_train = smote.fit_resample(x_train, y_train)
-smote_data1 = x_train, y_train 
+# model.fit(x_train, y_train, verbose=1,
+#           eval_set=[(x_train, y_train), (x_test, y_test)],
+#           eval_metric='mlogloss',                # rmse, mae, logloss, error
+#           early_stopping_rounds=10,              # mlogloss, merror 
+#           )     
 
-end = time.time()
-model = XGBClassifier(n_jobs = -1)
-model.fit(x_train, y_train)
+end = time.time() - start
+
+
+#4. 평가, 예측
+
 score = model.score(x_test, y_test)
-print('model.score :', round(score,4))
-y_pred = model.predict(x_test)
-print('accuracy_score :', round(accuracy_score(y_test, y_pred),4))
-f1 = f1_score(y_test, y_pred, average='macro')
-print('f1_score:',f1)
-print('걸린시간 : ', end-start)
+y_predict = model.predict(x_test)
 
+print('라벨 : ', np.unique(y, return_counts=True))
+
+print("걸린시간 : ", round(end, 4), "초")
+print("model.score : ", score)
+print("accuracy score : ", round(accuracy_score(y_test, y_predict),4))
+print("f1 score : ", round(f1_score(y_test, y_predict, average='macro'),4))
