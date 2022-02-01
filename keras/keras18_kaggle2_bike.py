@@ -11,7 +11,7 @@ def RMSE(y_test, y_pred):
 # sqrt : 제곱근
 
 #1. 데이터 
-path = './_data/bike/'   # '..'의 뜻은 이전 단계이다. / '.'은 현재 단계 >> 여기선 STUDY 폴더
+path = 'D:\\_data\\kaggle\\bike\\'   # '..'의 뜻은 이전 단계이다. / '.'은 현재 단계 >> 여기선 STUDY 폴더
 train = pd.read_csv(path+'train.csv')  
 # print(train)      # (10886, 12)
 test_file = pd.read_csv(path+'test.csv')

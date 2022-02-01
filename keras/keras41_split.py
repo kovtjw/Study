@@ -1,7 +1,7 @@
 import numpy as np
 
 a = np.array(range(1,11))  # 1~10
-size = 5  # 5개씩 자른다.
+size = 3  # 5개씩 자른다.
 
 def split_x(data, size):
     aaa = []

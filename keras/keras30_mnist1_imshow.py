@@ -8,5 +8,5 @@ print(x_train[3])
 print('y_train[0]번째 값 : ',y_train[3])
 # y값은 10개(0,1,2,3,4,5,6,7,8,9)
 import matplotlib.pyplot as plt
-plt.imshow(x_train[3], 'gray')
+plt.imshow(x_train[7], 'gray')
 plt.show()

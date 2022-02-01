@@ -33,7 +33,7 @@ print(x)
 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 pad_x = pad_sequences(x, padding='pre', maxlen = 5)
-print(pad_x) 
+print('pad_x', pad_x) 
 print(pad_x.shape)      # (13, 5) > numpy로 변환되서 shape가 나옴
 
 word_size = len(token.word_index)
@@ -48,7 +48,6 @@ from tensorflow.keras.layers import Dense, Embedding, LSTM
 # 옥스포드 사전은? (13,5,1000000) -> 6,500만개 >>> 하면 안됨
 
 # 2. 모델
-
 model = Sequential()
                                                   # 인풋은 (13,5)
                                                   # 단어 수, 길이 // 열의 개수 // 원핫 인코딩하지 않은 데이터를 벡터화 시켜준다.
