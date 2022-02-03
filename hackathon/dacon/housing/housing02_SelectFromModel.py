@@ -153,7 +153,7 @@ test_sets = scaler.transform(test_sets)
 '''
 
 colsample_bytree = 0.8231
-learning_rate = 0.115
+learning_rate = 0.1151
 max_depth = 7
 min_child_weight= 2.0886
 n_estimators= 8293

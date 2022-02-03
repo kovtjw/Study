@@ -188,7 +188,7 @@ path_save_csv = './hackathon/dacon/housing/_save_csv/'
 now1 = datetime.now()
 now_date = now1.strftime('%m%d_%H%M') # 연도와 시간
 
-submit_sets.to_csv(path_save_csv + now_date + '_' + str(round(nmae,4)) + 'csv')
+submit_sets.to_csv(path_save_csv + now_date + '_' + str(round(nmae,4)) + '.csv')
 
 model.summary()
 
