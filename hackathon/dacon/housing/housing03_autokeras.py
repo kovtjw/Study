@@ -147,9 +147,11 @@ x_test = scaler.transform(x_test)
 test_sets = scaler.transform(test_sets)
 
 ak_model = ak.StructuredDataRegressor(
-    overwrite = True, max_trials = 20, loss= 'mean_absolute_error',
+    overwrite = True, max_trials = 2, loss= 'mean_absolute_error',
 )
-ak_model.fit(x_train, y_train,validation_split = 0.2)
+start = time.time()
+ak_model.fit(x_train, y_train,epochs = 5, validation_split = 0.2)
+end = time.time() - start
 
 model = ak_model.export_model()   # trial의 수만큼 훈련 시킨 것 중에 가장 좋은 것을 꺼낸다.
 # 모델 저장하는 법 
@@ -163,5 +165,47 @@ y_pred = y_pred.reshape(270,)
 nmae = NMAE(np.expm1(y_test), np.expm1(y_pred))
 print('nmae :', round(nmae, 6))
 
-############################## 제출용 ################################
 
+
+########################## 영기형!!! 여기만 봐주시면 됩니다!!!!!! ●'◡'● ###########################
+
+############################## 제출용 ################################
+colsample_bytree = 0.8231
+learning_rate = 0.115
+max_depth = 7
+min_child_weight= 2.0886
+n_estimators= 8293
+reg_lamda= 6.869
+subsample= 0.7027
+
+
+y_submit = model.predict(test_sets)
+
+y_submit = np.expm1(y_submit)
+submit_sets.target = y_submit
+
+path_save_csv = './hackathon/dacon/housing/_save_csv/'
+now1 = datetime.now()
+now_date = now1.strftime('%m%d_%H%M') # 연도와 시간
+
+submit_sets.to_csv(path_save_csv + now_date + '_' + str(round(nmae,4)) + 'csv')
+
+model.summary()
+
+with open(path_save_csv + now_date + '_' +
+          str(round(nmae,4))+ 'submit.txt', 'a') as file:
+    file.write('===========================')
+    file.write('저장 시간 : '+ now_date + '\n')
+    file.write('scaler : ' + str(scaler) + '\n')
+    file.write('colsample_bytree :' + str('colsample_bytree') + '\n')
+    file.write('learning_rate :' + str('learning_rate') + '\n')
+    file.write('max_depth :' + str('max_depth') + '\n')
+    file.write('min_child_weight :' + str('min_child_weight') + '\n')
+    file.write('n_estimators :' + str('n_estimators') + '\n')
+    file.write('subsample :' + str('subsample') + '\n')
+    file.write('걸린 시간 : '+ str(round(end,4)) + '\n')
+    file.write('evaluate : '+str(np.round(results,6)) + '\n')
+    file.write('NMAE : '+str(round(nmae, 6)) + '\n')
+    
+    
+    
