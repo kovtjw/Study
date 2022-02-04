@@ -187,7 +187,7 @@ print('=====================파라미터 튜닝 결과========================='
 
 target_list = []
 for result in bo.res:
-      target = result['target']
+      target = result['target'] 
       target_list.append(target)
 
 min_dict = bo.res[np.argmin(np.array(target_list))]

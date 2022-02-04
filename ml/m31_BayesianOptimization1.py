@@ -5,7 +5,6 @@ def black_box_function(x,y):
 
 pbounds = {'x' : (2,4), 'y' : (-3, 3)}
 
-
 optimizer = BayesianOptimization(
     f = black_box_function,
     pbounds = pbounds,

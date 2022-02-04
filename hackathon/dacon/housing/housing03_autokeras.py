@@ -154,6 +154,7 @@ ak_model.fit(x_train, y_train,epochs = 5, validation_split = 0.2)
 end = time.time() - start
 
 model = ak_model.export_model()   # trial의 수만큼 훈련 시킨 것 중에 가장 좋은 것을 꺼낸다.
+
 # 모델 저장하는 법 
 y_pred = ak_model.predict(x_test)
 results = model.evaluate(x_test,y_test)
@@ -164,8 +165,6 @@ y_pred = y_pred.reshape(270,)
 
 nmae = NMAE(np.expm1(y_test), np.expm1(y_pred))
 print('nmae :', round(nmae, 6))
-
-
 
 ########################## 영기형!!! 여기만 봐주시면 됩니다!!!!!! ●'◡'● ###########################
 
