@@ -176,11 +176,20 @@ model.fit(x_train, y_train,
 
 #################  SelectFromModel ####################
 
-tresholds = np.sort(model.feature_importances_)
-# tresholds = model.feature_importances_
+# tresholds = np.sort(model.feature_importances_)
+tresholds = model.feature_importances_
 
 print(tresholds)
-print(datasets.columns)
+
+##################################불 필요 컬럼 삭제#################################
+x_train = np.delete(x_train, [11,13,14,16], axis = 1)
+x_test = np.delete(x_test, [11,13,14,16], axis = 1)
+test_sets = np.delete(test_sets, [11,13,14,16], axis = 1)
+
+print(x_train.shape, x_test.shape, test_sets.shape)
+# (1078, 18) (270, 18) (1350, 18)
+##################################불 필요 컬럼 삭제#################################
+
 
 for thresh in tresholds:
   selection = SelectFromModel(model, threshold=thresh, prefit=True)
@@ -195,7 +204,7 @@ for thresh in tresholds:
                      max_depth = max_depth,
                      min_child_weight = min_child_weight,
                      n_estimators = n_estimators,
-                     reg_lamda = reg_lamda,
+                    #  reg_lamda = reg_lamda,
                      subsample = subsample)
   
   selection_model.fit(select_x_train, y_train,
@@ -213,6 +222,64 @@ for thresh in tresholds:
 
 
 '''
-hresh = 0.004, n=22, R2: 89.45%
+(1078, 1) (270, 1)
+Thresh = 0.280, n=1, R2: 70.46%
+(1078, 5) (270, 5)
+Thresh = 0.030, n=5, R2: 84.71%
+(1078, 2) (270, 2)
+Thresh = 0.260, n=2, R2: 75.84%
+(1078, 19) (270, 19)
+Thresh = 0.005, n=19, R2: 89.65%
+(1078, 12) (270, 12)
+Thresh = 0.010, n=12, R2: 88.82%
+(1078, 11) (270, 11)
+Thresh = 0.011, n=11, R2: 89.51%
+(1078, 8) (270, 8)
+Thresh = 0.015, n=8, R2: 84.85%
+(1078, 10) (270, 10)
+Thresh = 0.012, n=10, R2: 87.31%
+(1078, 15) (270, 15)
+Thresh = 0.008, n=15, R2: 88.39%
+(1078, 20) (270, 20)
+Thresh = 0.005, n=20, R2: 89.62%
+(1078, 18) (270, 18)
+Thresh = 0.005, n=18, R2: 89.19%
+(1078, 9) (270, 9)
+Thresh = 0.014, n=9, R2: 84.37%
+(1078, 7) (270, 7)
+Thresh = 0.018, n=7, R2: 84.80%
+(1078, 22) (270, 22)
+Thresh = 0.003, n=22, R2: 89.09%
 (1078, 21) (270, 21)
+Thresh = 0.003, n=21, R2: 88.72%
+(1078, 14) (270, 14)
+Thresh = 0.009, n=14, R2: 88.99%
+(1078, 17) (270, 17)
+Thresh = 0.006, n=17, R2: 88.37%
+(1078, 16) (270, 16)
+Thresh = 0.007, n=16, R2: 87.65%
+(1078, 13) (270, 13)
+Thresh = 0.009, n=13, R2: 89.05%
+(1078, 4) (270, 4)
+Thresh = 0.031, n=4, R2: 74.02%
+(1078, 6) (270, 6)
+Thresh = 0.020, n=6, R2: 84.54%
+(1078, 3) (270, 3)
+Thresh = 0.238, n=3, R2: 75.23%
+'''
+'''
+Index(['Overall Qual', 'Gr Liv Area', 'Garage Cars', 'Garage Area',
+       'Total Bsmt SF', '1st Flr SF', 'Full Bath', 'Year Built',
+       'Year Remod/Add', 'Garage Yr Blt', 'target', 'Exter Qual_2',
+       'Exter Qual_3', 'Exter Qual_4', 'Exter Qual_5', 'Kitchen Qual_2',
+       'Kitchen Qual_3', 'Kitchen Qual_4', 'Kitchen Qual_5', 'Bsmt Qual_2',
+       'Bsmt Qual_3', 'Bsmt Qual_4', 'Bsmt Qual_5']
+       
+[0.28014547 0.02980622 0.26040328 0.00476726 0.01023544 0.01089026
+ 0.01496887 0.01205076 0.00790177 0.00450289 0.00494695 0.01422107
+ 0.0184145  0.00302098 0.00330032 0.00883562 0.0058591  0.00732412
+ 0.0094856  0.03089884 0.02005105 0.2379696 ]
+'''
+'''
+11, 13, 14, 16
 '''
