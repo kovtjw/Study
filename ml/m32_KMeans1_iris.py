@@ -16,6 +16,7 @@ irisDF['target'] = datasets.target
 
 score = accuracy_score(irisDF['target'],irisDF['cluster'])
 print(score)
+
 '''
 kmaen
 y 값 자체를 지정해 주지 않아도 된다. 
