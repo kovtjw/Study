@@ -13,11 +13,12 @@ y_train = to_categorical(y_train)
 y_test = to_categorical(y_test)
 
 #2. 모델구성
-from tensorflow.keras.layers import GlobalAvgPool2D
+from tensorflow.keras.layers import GlobalAvgPool2D,MaxPool2D
 
 model = Sequential() 
 model.add(Conv2D(7, kernel_size = (3,3), input_shape = (28,28,1))) 
-model.add(Conv2D(5, (3,3), activation='relu'))                     
+model.add(Conv2D(5, (3,3), activation='relu'))
+model.add(MaxPool2D())
 model.add(Dropout(0.2))
 model.add(Conv2D(4, (2,2), activation='relu')) 
 model.add(GlobalAvgPool2D())   # 정리하기 
@@ -30,7 +31,7 @@ model.add(Dense(10, activation = 'softmax'))
 #3. 컴파일, 훈련
 import time
 from tensorflow.keras.optimizers import Adam
-lr = 0.01
+lr = 0.0001
 optimizer = Adam(learning_rate=lr)
 model.compile(loss='categorical_crossentropy', optimizer = optimizer, metrics=['accuracy'])
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint

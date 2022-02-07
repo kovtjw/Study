@@ -1,11 +1,8 @@
 import autokeras as ak
 import tensorflow as tf
-
 cifar100 = tf.keras.datasets.cifar100
- 
 #1. 데이터
 (x_train, y_train), (x_test, y_test) = cifar100.load_data()
-
 #2. 모델
 model = ak.ImageClassifier(
     overwrite = True,
