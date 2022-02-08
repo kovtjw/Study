@@ -26,22 +26,22 @@ model.add(Dense(10, activation = 'softmax'))
 #3. 컴파일, 훈련
 import time
 from tensorflow.keras.optimizers import Adam
-##############################################
 learning_rate = 0.001
 optimizer = Adam(learning_rate=learning_rate)
-############################################################################################
-model.compile(loss='categorical_crossentropy', optimizer = optimizer, metrics=['accuracy'])
+
+model.compile(loss='categorical_crossentropy', optimizer = optimizer, metrics=['acc'])
+
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau, TensorBoard
-############################################################################################
 es = EarlyStopping(monitor='val_loss', patience=15, mode='auto',
                    verbose=1, restore_best_weights=False)
 ReduceLR = ReduceLROnPlateau(monitor='val_loss', patience=5, mode = 'min',
                              verbose=3, factor=0.5)
-tb = TensorBoard(log_dir='../_graph')
+tb = TensorBoard(log_dir='../_graph',
+                 write_graph=True, write_images = True)
 
 start = time.time()
 hist = model.fit(x_train, y_train, epochs=10, batch_size=32,
-          validation_split=0.25, callbacks=[es, ReduceLR])
+          validation_split=0.25, callbacks=[es, ReduceLR, tb])
 end = time.time()
 
 
@@ -66,7 +66,7 @@ plt.xlabel('epochs')
 plt.legend(loc = 'upper right')
 
 # 2
-plt.subplot(2,1,1)
+plt.subplot(2,1,2)
 plt.plot(hist.history['acc'], marker = '.', c = 'red', label = 'loss' )
 plt.plot(hist.history['val_acc'], marker = '.', c = 'blue', label = 'val_acc' )
 plt.grid()
