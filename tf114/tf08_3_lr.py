@@ -1,7 +1,5 @@
 # 실습
-# 1. [4]
-# 2. [5, 6]
-# 3. [6, 7, 8]
+# lr 수정해서 epochs를 100 이하로 줄이기
 
 # 위 값들을 이용해서 predict 하기
 # x_test라는 placeholder를 생성
@@ -11,8 +9,9 @@ import tensorflow as tf
 tf.set_random_seed(66)
 
 #1. 데이터
-# x_train = [1,2,3]
-# y_train = [1,2,3]
+x_train_data = [1,2,3]
+y_train_data = [3,5,7]
+
 x_train = tf.placeholder(tf.float32, shape = [None])
 y_train = tf.placeholder(tf.float32, shape = [None])
 x_test = tf.placeholder(tf.float32, shape = [None])
@@ -33,7 +32,7 @@ hypothesis = x_train * w + b    # y = wx + b
 #3-1. 컴파일
 loss = tf.reduce_mean(tf.square(hypothesis - y_train))
 # mse // square = 제곱, reduce_mean = 평균
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.01)
+optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.17)
 train = optimizer.minimize(loss)
 
 # model.compili(loss = 'mse',optimizer = 'sgd')
@@ -42,10 +41,10 @@ train = optimizer.minimize(loss)
 sess = tf.compat.v1.Session()
 sess.run(tf.global_variables_initializer())  # w, b 변수 초기화
 
-for step in range(21):
+for step in range(101):
     # sess.run(train)
     _, loss_val, w_val, b_val = sess.run([train, loss, w, b],
-                                feed_dict={x_train : [1,2,3], y_train : [1,2,3]})
+                                feed_dict={x_train : x_train_data, y_train : y_train_data})
     if step % 1 == 0:
         # print(step, sess.run(loss), sess.run(w), sess.run(b))
         print(step, loss_val, w_val, b_val)

@@ -7,7 +7,7 @@ print(hello)
 
 sess = tf.compat.v1.Session()  # 무조건 만들어야 한다 >> 텐서 머신을 만든다.
 print(sess.run(hello))
-# Tensor("Const:0", shape=(), dtype=string)
+# Tensor("Const:0", shape=()ㄴ dtype=string)
 # b'Hello World'
 
 ###################################################################################

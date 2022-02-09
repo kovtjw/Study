@@ -1,18 +1,10 @@
-# 실습
-# 1. [4]
-# 2. [5, 6]
-# 3. [6, 7, 8]
-
-# 위 값들을 이용해서 predict 하기
-# x_test라는 placeholder를 생성
-
-# y = wx + b
 import tensorflow as tf
 tf.set_random_seed(66)
 
 #1. 데이터
-# x_train = [1,2,3]
-# y_train = [1,2,3]
+x_train_data = [1,2,3]
+y_train_data = [3,5,7]
+
 x_train = tf.placeholder(tf.float32, shape = [None])
 y_train = tf.placeholder(tf.float32, shape = [None])
 x_test = tf.placeholder(tf.float32, shape = [None])
@@ -42,30 +34,29 @@ train = optimizer.minimize(loss)
 sess = tf.compat.v1.Session()
 sess.run(tf.global_variables_initializer())  # w, b 변수 초기화
 
-for step in range(21):
+loss_val_list = []
+w_val_list = []
+
+for step in range(2001):
     # sess.run(train)
     _, loss_val, w_val, b_val = sess.run([train, loss, w, b],
-                                feed_dict={x_train : [1,2,3], y_train : [1,2,3]})
-    if step % 1 == 0:
+                                feed_dict={x_train : x_train_data, y_train : y_train_data})
+    if step % 10 == 0:
         # print(step, sess.run(loss), sess.run(w), sess.run(b))
         print(step, loss_val, w_val, b_val)
-
+    
+    loss_val_list.append(loss_val)
+    w_val_list.append(w_val)
 
 #4. 평가, 예측
 test = x_test * w + b
 # sess = tf.Session()
 print(sess.run(test ,feed_dict = {x_test:[6,7,8]}))
-## 입력 값은 placeholder로 
-# sess.close()
-
-# [4.4951653 5.134803  5.7744403]
-# [4.4951653 5.134803  5.7744403]
-
-
-######################### 선생님 ###########################
-
-x_test = tf.compat.v1.placeholder(tf.float32, shape=[None])
-y_pred = x_test * w_val + b_val
-print('[6,7,8] 예측 :', sess.run(y_pred, feed_dict={x_test : [6,7,8]}))
 
 sess.close()
+
+import matplotlib.pyplot as plt
+plt.plot(loss_val_list[100:])
+plt.xlabel('epochs')
+plt.ylabel('loss')
+plt.show()
