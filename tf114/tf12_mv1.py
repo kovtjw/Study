@@ -1,5 +1,6 @@
 import tensorflow as tf
 tf.set_random_seed(66)
+# mv = multi variable
 
 #1. 데이터
 x1_data = [73., 93., 89., 96., 73.]     # 국어
