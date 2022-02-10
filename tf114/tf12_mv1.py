@@ -16,11 +16,11 @@ x2 = tf.placeholder(tf.float32)
 x3 = tf.placeholder(tf.float32)
 y = tf.placeholder(tf.float32)
 
-w1 = tf.compat.v1.Variable(tf.random_normal([1]), name = 'weight1')   #  tf.random_normal([1]) shape를 말한다.
+w1 = tf.compat.v1.Variable(tf.random_normal([1]), name = 'weight1')   
 w2 = tf.compat.v1.Variable(tf.random_normal([1]), name = 'weight2')
 w3 = tf.compat.v1.Variable(tf.random_normal([1]), name = 'weight3')
 b = tf.compat.v1.Variable(tf.random_normal([1]), name = 'bias')
-
+#  tf.random_normal([1]) shape를 말한다.
 sess = tf.compat.v1.Session()
 sess.run(tf.compat.v1.global_variables_initializer())
 print(sess.run([w1,w2,w3]))

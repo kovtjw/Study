@@ -9,7 +9,6 @@ import time
 def RMSE(y_test, y_pred):
     return np.sqrt(mean_squared_error(y_test, y_pred))
 
-
 #1. 데이터 
 path = '../_data/kaggle/bike/'  
 train = pd.read_csv(path+'train.csv')  

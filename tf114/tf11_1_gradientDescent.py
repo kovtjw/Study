@@ -10,11 +10,11 @@ x = tf.compat.v1.placeholder(tf.float32)
 y = tf.compat.v1.placeholder(tf.float32)
 
 # w = tf.compat.v1.Variable(tf.random_normal([1]), name = 'weight')
-w = tf.compat.v1.Variable(2, dtype=tf.float32)
+w = tf.compat.v1.Variable(4, dtype=tf.float32)
 hypothesis = x * w
 
 loss = tf.reduce_mean(tf.square(hypothesis - y))
-lr = 0.21 
+lr = 1e-5 
 gradient = tf.reduce_mean((x * w - y)*x)
 descent = w - lr * gradient    
 # w = w-lr*gradient 
@@ -26,7 +26,7 @@ sess.run(tf.compat.v1.global_variables_initializer())
 w_history = []
 loss_history = []
 
-for step in range(21):
+for step in range(101):
     _, loss_v, w_v = sess.run([update,loss, w], feed_dict={x:x_data, y:y_data})
     print(step, '\t', loss_v, '\t', w_v)
     
