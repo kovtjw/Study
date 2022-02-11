@@ -14,12 +14,19 @@ y_data = [[0],[1],[1],[0]]
 x = tf.compat.v1.placeholder(tf.float32, shape = [None, 2])
 y = tf.compat.v1.placeholder(tf.float32, shape = [None, 1])
 
-w = tf.compat.v1.Variable(tf.random.normal([2,1]), name = 'weight1') # 두 번째 레이어의 노드 수에 맞게 설정
-b = tf.compat.v1.Variable(tf.zeros([1]), name = 'bias1')  # 
+w1 = tf.compat.v1.Variable(tf.random.normal([2,30]), name = 'weight1') # 두 번째 레이어의 노드 수에 맞게 설정
+b1 = tf.compat.v1.Variable(tf.zeros([30]), name = 'bias1')  # 
 
 #2. 모델 구성
+# Hidden_layer1 = tf.sigmoid(tf.matmul(x,w1) + b1)  # sigmoid는 해도되고 안해도 된다. 
+# Hidden_layer1 = tf.matmul(x,w1) + b1
+Hidden_layer1 = tf.nn.selu(tf.matmul(x,w1) + b1)
+w2 = tf.compat.v1.Variable(tf.random.normal([30,1]), name = 'weight2')
+b2 = tf.compat.v1.Variable(tf.zeros([1]), name = 'bias2')
 
-hypothesis = tf.sigmoid(tf.matmul(x, w) + b)   # x는 상위 레이어의 아웃풋이다.
+
+
+hypothesis = tf.sigmoid(tf.matmul(Hidden_layer1, w2) + b2)   # x는 상위 레이어의 아웃풋이다.
 
 #3-1. 컴파일
 loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis))

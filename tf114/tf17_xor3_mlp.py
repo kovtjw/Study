@@ -2,6 +2,8 @@ from base64 import b16decode
 import tensorflow as tf
 tf.compat.v1.set_random_seed(66)
 
+## 히든 레이어를 2개 이상으로 늘려라!!!
+
 #1. 데이터
 x_data = [[0,0],[0,1],[1,0],[1,1]]
 y_data = [[0],[1],[1],[0]]
@@ -14,12 +16,25 @@ y_data = [[0],[1],[1],[0]]
 x = tf.compat.v1.placeholder(tf.float32, shape = [None, 2])
 y = tf.compat.v1.placeholder(tf.float32, shape = [None, 1])
 
-w = tf.compat.v1.Variable(tf.random.normal([2,1]), name = 'weight1') # 두 번째 레이어의 노드 수에 맞게 설정
-b = tf.compat.v1.Variable(tf.zeros([1]), name = 'bias1')  # 
+w1 = tf.compat.v1.Variable(tf.random.normal([2,30]), name = 'weight1') 
+b1 = tf.compat.v1.Variable(tf.zeros([30]), name = 'bias1')  
 
 #2. 모델 구성
+# Hidden_layer1 = tf.sigmoid(tf.matmul(x,w1) + b1)  # sigmoid는 해도되고 안해도 된다. 
+# Hidden_layer1 = tf.matmul(x,w1) + b1
+Hidden_layer1 = tf.nn.selu(tf.matmul(x,w1) + b1)
+w2 = tf.compat.v1.Variable(tf.random.normal([30,5]), name = 'weight2')
+b2 = tf.compat.v1.Variable(tf.zeros([5]), name = 'bias2')
 
-hypothesis = tf.sigmoid(tf.matmul(x, w) + b)   # x는 상위 레이어의 아웃풋이다.
+Hidden_layer2 = tf.nn.selu(tf.matmul(Hidden_layer1,w2) + b2)
+w3 = tf.compat.v1.Variable(tf.random.normal([5,1]), name = 'weight3')
+b3 = tf.compat.v1.Variable(tf.zeros([1]), name = 'bias3')
+
+# Hidden_layer3 = tf.nn.selu(tf.matmul(Hidden_layer1,w2) + b2)
+# w4 = tf.compat.v1.Variable(tf.random.normal([5,1]), name = 'weight4')
+# b4 = tf.compat.v1.Variable(tf.zeros([1]), name = 'bias4')
+
+hypothesis = tf.sigmoid(tf.matmul(Hidden_layer2, w3) + b3)   # x는 상위 레이어의 아웃풋이다.
 
 #3-1. 컴파일
 loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis))
@@ -45,10 +60,3 @@ pred, acc = sess.run([y_pred, accuracy], feed_dict = {x:x_data, y : y_data})
 
 print('예측 결과 :', '\n', pred)
 print('accuracy :', acc)
-
-
-'''
-레이어를 추가하지 않고, 노드 수를 늘리면서 정확도를 높일 수 있었다. >> 겨울 해결!
-
-
-'''
