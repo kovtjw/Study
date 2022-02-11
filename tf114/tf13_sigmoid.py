@@ -35,8 +35,6 @@ for epochs in range(2001):
         print(epochs, 'loss :',loss_val, '\n', hy_val)
         
 
-
-
 #4. 평가, 예측
 y_pred = tf.cast(hypothesis > 0.5, dtype = tf.float32)  # 실수형으로 변환해 주겠다.
 # tf.cast = 텐서를 새로운 형태로 캐스팅하는데 사용한다. 

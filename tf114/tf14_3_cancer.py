@@ -21,7 +21,7 @@ hypothesis = tf.sigmoid(tf.matmul(x,w) + b)
 
 #3-1. 컴파일
 loss = -tf.reduce_mean(y*tf.log(hypothesis)+(1-y)*tf.log(1-hypothesis))
-optimizer = tf.train.AdamOptimizer(learning_rate= 0.01)
+optimizer = tf.train.AdamOptimizer(learning_rate= 1e-9)
 train = optimizer.minimize(loss)
 
 #3-2. 훈련
