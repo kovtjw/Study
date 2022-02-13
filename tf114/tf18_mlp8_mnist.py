@@ -65,5 +65,5 @@ with tf.Session() as sess:
     
     y_acc_test = sess.run(tf.argmax(y_test, 1))
     predict = sess.run(tf.argmax(sess.run(hypothesis, feed_dict={x:x_test}), 1))
-    acc = accuracy_score(y_acc_test, predict)
+    acc = accuracy_score(y_acc_test, predict)    
     print("accuracy_score : ", acc)
