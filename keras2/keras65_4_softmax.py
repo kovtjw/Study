@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from tkinter import Y
 
 def softmax(x):
     return np.exp(x) / np.sum(np.exp(x))
@@ -9,7 +10,7 @@ y = softmax(x)
 
 ratio = y
 labels = y
-plt.pie(ratio , labels, shadow=True, startangle=90)
+plt.pie(y, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
 plt.show()
 
 # softmax의 전체의 합은 1이다. 

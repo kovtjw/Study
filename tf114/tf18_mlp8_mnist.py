@@ -1,53 +1,51 @@
-from keras.datasets import mnist
-from tensorflow.keras.utils import to_categorical
 import tensorflow as tf
+import numpy as np
+from tensorflow.keras.datasets import mnist
+from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import OneHotEncoder
+(x_train, y_train), (x_test,  y_test) = mnist.load_data()
 
-# datasets = mnist.load_data()
-(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train = x_train.reshape(60000, 784).astype('float32')/255.
+x_test = x_test.reshape(10000, 784).astype('float32')/255.
 
-y_train = to_categorical(y_train)
-y_test = to_categorical(y_test)
+y_train = y_train.reshape(-1,1)
+y_test = y_test.reshape(-1,1)
 
-x_train = x_train.reshape(60000,784)
-x_test = x_test.reshape(10000,784)
+ohe = OneHotEncoder()
+ohe.fit(y_train)
+y_train= ohe.transform(y_train).toarray()
+y_test = ohe.transform(y_test).toarray()
 
-print(x_train.shape, x_test.shape)  
-print(y_train.shape, y_test.shape)  # (60000, 10) (10000, 10)
+x = tf.compat.v1.placeholder(tf.float32, shape=[None,784])
+y = tf.compat.v1.placeholder(tf.float32, shape=[None,10])
 
-#2. 모델 구성
-x = tf.placeholder('float', shape=[None, 784])
-y = tf.placeholder('float', shape=[None, 10])
+print(x_train.shape, y_train.shape)  #(60000, 28, 28) (60000,10)
+print(x_test.shape, y_test.shape)  #(10000, 28, 28) (10000,10)
 
-w1 = tf.compat.v1.Variable(tf.random.normal([784,128]), name = 'weight1')
-b1 = tf.compat.v1.Variable(tf.zeros([128]), name = 'bias1')
+# 레이어를 쌓아준다.
 
-Hidden_layer1 = tf.nn.selu(tf.matmul(x,w1) + b1)
+w1 = tf.compat.v1.Variable(tf.zeros([784,128]), name='weight')
+b1 = tf.compat.v1.Variable(tf.zeros([1,128]), name = 'bias')
+layer1 = tf.matmul(x,w1) + b1
 
-w2 = tf.compat.v1.Variable(tf.random.normal([128,64]), name = 'weight2')
-b2 = tf.compat.v1.Variable(tf.zeros([64]), name = 'bias2')
+w2 = tf.compat.v1.Variable(tf.random_normal([128,32]), name='weight2')
+b2 = tf.compat.v1.Variable(tf.random_normal([1,32]), name = 'bias2')
+layer2 = tf.matmul(layer1,w2) + b2
 
-Hidden_layer2 = tf.nn.selu(tf.matmul(Hidden_layer1,w2) + b2)
 
-w3 = tf.compat.v1.Variable(tf.random.normal([64,16]), name = 'weight3')
-b3 = tf.compat.v1.Variable(tf.random.normal([16]), name = 'bias3')
+w3 = tf.compat.v1.Variable(tf.random_normal([32,10]), name='weight3')
+b3 = tf.compat.v1.Variable(tf.random_normal([1,10]), name = 'bias3')
+hypothesis = tf.nn.softmax(tf.matmul(layer2, w3) + b3) # 최종 아웃풋
 
-Hidden_layer3 = tf.nn.selu(tf.matmul(Hidden_layer2,w3) + b3)
 
-w4 = tf.compat.v1.Variable(tf.random.normal([16,13]), name = 'weight4')
-b4 = tf.compat.v1.Variable(tf.random.normal([13]), name = 'bias4')
+# 위에 모델과 같은 모델
 
-Hidden_layer4 = tf.matmul(Hidden_layer3,w4) + b4
 
-w5 = tf.compat.v1.Variable(tf.random.normal([13,10]), name = 'weight5')
-b5 = tf.compat.v1.Variable(tf.random.normal([10]), name = 'bias5')
+# loss = tf.reduce_mean(tf.square(hypothesis - y)) # mse
+loss = tf.reduce_mean(-tf.reduce_sum(y * tf.log(hypothesis), axis=1)) # categorical_crossentropy
 
-#2. 모델 구성
-hypothesis = tf.nn.softmax(tf.matmul(x,w5) + b5) 
-
-#3-1. 컴파일
-loss = tf.reduce_mean(-tf.reduce_sum(y*tf.log(hypothesis), axis =1))
-# optimizer = tf.train.AdamOptimizer(learning_rate= 0.01).minimize(loss)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate= 0.000001).minimize(loss)
+optimizer = tf.train.AdamOptimizer(learning_rate=0.0001).minimize(loss)
+# optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.000000001).minimize(loss)
 
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
@@ -56,14 +54,10 @@ with tf.Session() as sess:
         _, cos_val, = sess.run([optimizer, loss], feed_dict = {x:x_train,y:y_train})
         if step % 200 ==0:
             print(step, cos_val)
-    
-    y_acc_test = sess.run(tf.argmax(y_test, 1))
-    predict = sess.run(tf.argmax(sess.run(hypothesis, feed_dict={x:x_test}), 1))
-    accuracy = tf.reduce_mean(tf.cast(tf.equal(predict, y_acc_test),dtype=tf.float32))
-    a = sess.run(accuracy,feed_dict = {x:x_test,y:y_test})
-    print("\nacc : ", a)
-    
-    y_acc_test = sess.run(tf.argmax(y_test, 1))
-    predict = sess.run(tf.argmax(sess.run(hypothesis, feed_dict={x:x_test}), 1))
-    acc = accuracy_score(y_acc_test, predict)    
-    print("accuracy_score : ", acc)
+
+    # a = sess.run(hypothesis, feed_dict={x:x_test})
+    # print(a,'\n' ,sess.run(tf.argmax(a, 1)))
+        y_acc_test = sess.run(tf.argmax(y_test, 1))
+        predict = sess.run(tf.argmax(sess.run(hypothesis, feed_dict={x:x_test}), 1))
+        acc = accuracy_score(y_acc_test, predict)
+        print(step,"accuracy_score : ", acc)
