@@ -36,3 +36,13 @@ model.summary()
 print('===================================================')
 print('전체 가중치 갯수 :', len(model.weights))
 print('전체 가중치 갯수 :', len(model.trainable_weights))
+
+model_list = [VGG16(), VGG19(), ResNet50(), ResNet50V2(), ResNet101(), ResNet101V2(), DenseNet121(), DenseNet169(), DenseNet201(),
+              InceptionV3(), InceptionResNetV2(), MobileNet(), MobileNetV2(), MobileNetV3Small(), MobileNetV3Large(),
+              NASNetLarge(), NASNetMobile(), EfficientNetB0(), EfficientNetB1(), EfficientNetB7(), Xception()]
+
+for model in model_list:
+    model = model
+    print(f"모델명 : {model.name}")
+    print(f"전체 가중치 갯수 : {len(model.weights)}")
+    print(f"훈련가능 가중치 갯수 : {len(model.trainable_weights)}\n")

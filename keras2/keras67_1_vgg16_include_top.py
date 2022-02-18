@@ -4,8 +4,8 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.applications import VGG16  # layer가 16개
 
 # model = VGG16()  : 전이학습의 hello world
-model = VGG16(weights = 'imagenet', include_top = False,  # >> Faslse로 하면 shape 조절이 가능하다 
-              input_shape = (32, 32, 3))
+model = VGG16(weights = 'imagenet', include_top = True,) # >> Faslse로 하면 shape 조절이 가능하다 
+            #   input_shape = (32, 32, 3))
 model.summary()
 print(len(model.weights))
 print(len(model.trainable_weights))

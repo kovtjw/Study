@@ -21,10 +21,11 @@ y_test = to_categorical(y_test)
 from tensorflow.keras.layers import GlobalAvgPool2D,MaxPool2D
 vgg16 = VGG16(weights = 'imagenet', include_top = False,
               input_shape = (32, 32, 3))
+vgg16.trainable = False
 
 model = Sequential()
 model.add(vgg16)
-model.add(GlobalAvgPool2D()) 
+model.add(GlobalAvgPool2D())
 model.add(Dense(32, activation='relu'))
 model.add(Dropout(0.2))
 model.add(Dense(16, activation='relu'))
@@ -49,7 +50,7 @@ ReduceLR = ReduceLROnPlateau(monitor='val_loss', patience=5, mode = 'min',
 ############################################################################################
 
 start = time.time()
-model.fit(x_train, y_train, epochs=3, batch_size=32,
+model.fit(x_train, y_train, epochs=100, batch_size=32,
           validation_split=0.25, callbacks=[es, ReduceLR])
 end = time.time()
 
@@ -60,3 +61,15 @@ print('loss:', loss[0])
 print('걸린시간 :', (end - start))
 print('acc:', loss[1])
 
+'''
+1. GlobalAvgPool2D
+====================== 1. 기본출력 ========================
+313/313 [==============================] - 3s 9ms/step - loss: 0.5922 - accuracy: 0.8167
+loss: 0.5921745300292969
+걸린시간 : 581.842047214508
+acc: 0.8166999816894531
+
+2. Flatten
+
+3. 
+'''
