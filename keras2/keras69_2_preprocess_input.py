@@ -4,7 +4,7 @@ from tensorflow.keras.applications.resnet50 import preprocess_input, decode_pred
 import numpy as np
 
 model = ResNet50(weights='imagenet')
-img_path = '../_data/boy.jpg'     # 크기 520 x 355
+img_path = '../_data/boy.jpg'    
 img = image.load_img(img_path, target_size=(224, 224))
 x = image.img_to_array(img)
 print('=====================image.img_to_array(img)============================')
