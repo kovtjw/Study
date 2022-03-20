@@ -16,6 +16,7 @@ def CRNN3(input_shape, num_classes, prediction_only=False, gru=False):
         
     # References
         https://arxiv.org/abs/1507.05717
+        123123434156526926
     """
     
     act = 'relu'
