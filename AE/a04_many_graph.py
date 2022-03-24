@@ -3,7 +3,7 @@
 # 다른 하나는 딥하게 구성
 # 2개의 성능 비교
 # 앞뒤가 똑같은 autoencoder
-# layer를 줄였을 때 데이터가 감쇠한다는 것을 알아야 한다. 
+# layer의 node 수를 갑자기 확 줄였을 때 데이터가 감쇠한다는 것을 알아야 한다. 
 
 
 import numpy as np
