@@ -36,7 +36,7 @@ autoencoder.fit(x_train, x_train, epochs=30, batch_size=128,validation_split=0.2
 decoded_imgs=autoencoder.predict(x_test)
 
 import matplotlib.pyplot as plt
-n = 20
+n = 10
 plt.figure(figsize = (20,4))
 for i in range(n):
     ax = plt.subplot(2,n, i+1)
