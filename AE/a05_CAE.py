@@ -31,18 +31,15 @@ from tensorflow.keras.layers import Dense, Input, Conv2D, MaxPool2D, UpSampling2
 
 def autoencoder(hidden_layer_size):
     model = Sequential()
-    model.add(Conv2D(units = hidden_layer_size, kernel_size = (2,2), input_shape = (28, 28, 1), activation = 'relu'))
-    model.add(MaxPool2D())
-    model.add(Conv2D(units = 64, kernel_size = (2,2),activation = 'relu'))
-    model.add(MaxPool2D())
-    model.add(Conv2D(units = 16, kernel_size = (2,2),  activation = 'relu'))
-    model.add(Conv2D(units = 8, kernel_size = (2,2), activation = 'relu'))
-    model.add(UpSampling2D())
-    model.add(Conv2D(units = 16, kernel_size = (2,2),  activation = 'relu'))
-    model.add(UpSampling2D())
-    model.add(Conv2D(units = 32, kernel_size = (2,2), activation = 'relu'))
-    model.add(UpSampling2D())
-    model.add(Conv2D(units = (28, 28, 1), activation = 'sigmoid'))
+    model.add(Conv2D(filters=hidden_layer_size, kernel_size = (3,3), input_shape = (28, 28, 1), activation = 'relu'))
+    model.add(MaxPool2D((2,2), padding='same'))
+    model.add(Conv2D(filters = 8, kernel_size = (3,3),activation = 'relu'))
+    model.add(MaxPool2D((2,2), padding='same'))
+    model.add(Conv2D(filters = 8, kernel_size = (3,3),  activation = 'relu'))
+    model.add(UpSampling2D((3,3)))
+    model.add(Conv2D(filters = 16, kernel_size = (3,3),  activation = 'relu'))
+    model.add(UpSampling2D((3,3)))
+    model.add(Conv2D(1, kernel_size = (3,3), activation = 'sigmoid'))
     return model
 
 # def autoencoder(hidden_layer_size):
@@ -52,10 +49,10 @@ def autoencoder(hidden_layer_size):
 #     ])
 #     return model
 
-model = autoencoder(hidden_layer_size= 32)
+model = autoencoder(hidden_layer_size= 16)
 
 #3. 컴파일, 훈련
-model.compile(loss = 'mse', optimizer = 'adam')
+model.compile(loss = 'binary_crossentropy', optimizer = 'adam')
 model.fit(x_train, x_train, epochs = 20)
 
 #4. 평가, 예측
