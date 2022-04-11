@@ -30,12 +30,12 @@ x_test = scaler.transform(x_test.reshape(m,-1)).reshape(x_test.shape)
 
 
 model = Sequential() 
-model.add(Conv2D(6, kernel_size = (4,4), strides = 1,
-                 padding = 'same',input_shape = (3072))) 
+model.add(Conv2D(32, kernel_size = (4,4), strides = 1,
+                 padding = 'same',input_shape = (32,32,3))) 
 model.add(MaxPooling2D())
-model.add(Conv2D(7, (3,3), activation='relu'))                     
+model.add(Conv2D(16, (3,3), activation='relu'))                     
 model.add(Dropout(0.5))
-model.add(Conv2D(5, (3,3), activation='relu'))
+model.add(Conv2D(8, (3,3), activation='relu'))
 model.add(MaxPooling2D())         
 model.add(Flatten()) 
 model.add(Dense(400, activation='relu'))
@@ -54,7 +54,7 @@ es = EarlyStopping(monitor='val_loss', patience=5, mode='auto',
                    verbose=1, restore_best_weights=False) # restore_best_weights=True : 최종값 이전에 가장 좋았던 값 도출함
 mcp = ModelCheckpoint (monitor = 'val_loss', mode = 'min', verbose = 1, save_best_only=True,
                        filepath = './_ModelCheckPoint/keras27_5_MCP.hdf5')
-model.fit(x_train, y_train, epochs=32, batch_size=512,
+model.fit(x_train, y_train, epochs=100, batch_size=64,
           validation_split=0.111, callbacks=[es,mcp])
 
 model.save('./_save/keras30_2_save_model.h5')
