@@ -53,7 +53,7 @@ ReduceLR = ReduceLROnPlateau(monitor='val_loss', patience=5, mode = 'min',
 ############################################################################################
 
 start = time.time()
-model.fit(x_train, y_train, epochs=32, batch_size=32,
+model.fit(x_train, y_train, epochs=100, batch_size=16,
           validation_split=0.25, callbacks=[es, ReduceLR])
 end = time.time()
 
@@ -70,6 +70,7 @@ print('acc:', loss[1])
 loss: 2.3734469413757324
 걸린시간 : 1416.972823381424
 acc: 0.48420000076293945
+val_loss
 '''
 '''
 스케일링 후

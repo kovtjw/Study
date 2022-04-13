@@ -54,7 +54,7 @@ es = EarlyStopping(monitor='val_loss', patience=5, mode='auto',
                    verbose=1, restore_best_weights=False) # restore_best_weights=True : 최종값 이전에 가장 좋았던 값 도출함
 mcp = ModelCheckpoint (monitor = 'val_loss', mode = 'min', verbose = 1, save_best_only=True,
                        filepath = './_ModelCheckPoint/keras27_5_MCP.hdf5')
-model.fit(x_train, y_train, epochs=100, batch_size=64,
+model.fit(x_train, y_train, epochs=100, batch_size=16,
           validation_split=0.111, callbacks=[es,mcp])
 
 model.save('./_save/keras30_2_save_model.h5')
