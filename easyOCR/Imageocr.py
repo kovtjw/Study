@@ -1,18 +1,22 @@
-import easyocr, os, matplotlib.pyplot as plt,cv2
+import easyocr
+import os
+, os, matplotlib.pyplot as plt,cv2
 from matplotlib import rcParams
 import matplotlib.patches as patches
 import matplotlib.patheffects as path_effects
-from PIL import Image, ImageDraw
 from tqdm import tqdm
 import numpy as np, pandas as pd, warnings, time
 from selenium.webdriver.common.keys import Keys
 from selenium import webdriver
-warnings.filterwarnings(action='ignore')
+
+# warnings.filterwarnings(action='ignore')
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
+
+exit()
 
 path = os.path.dirname(os.path.realpath(__file__))
 
 rcParams['font.family'] = 'NanumGothic'
-os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'
 
 img_path = os.listdir(path + '/data')
 
