@@ -13,16 +13,16 @@ x_train, x_test, y_train, y_test = train_test_split(x,y,
 
 #2. 모델구성
 model = Sequential()
-model.add(Dense(5, input_dim = 1))
-model.add(Dense(4))
-model.add(Dense(4))
+model.add(Dense(256, input_dim = 1))
+model.add(Dense(128))
+model.add(Dense(64))
 model.add(Dense(4))
 model.add(Dense(1))
 
 #3. 컴파일, 훈련 
 model.compile(loss='mse', optimizer='adam')
 
-model.fit(x_train,y_train, epochs=100, batch_size=1)
+model.fit(x_train,y_train, epochs=1000, batch_size=4)
 
 #4. 평가, 예측
 loss = model.evaluate(x_test,y_test) # loss가 훈련에 영향을 미치지 않는다. 
