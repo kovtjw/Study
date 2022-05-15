@@ -6,8 +6,8 @@ import torch.nn.functional as F
 
 
 #1. 데이터 (정제된 데이터)
-x = np.array([1,2,3,4])
-y = np.array([1,2,3,4])
+x = np.array([1,2,3,4,5])
+y = np.array([1,2,3,4,5])
 
 # 텐서형 데이터로 변환해줘야 함
 x = torch.FloatTensor(x).unsqueeze(1)   # (3,) -> (3,1) 
